@@ -5,12 +5,26 @@
 
 
 
-def load_recipes():
-    """Load recipes into database."""
-    
-    recipes_file = open("./seed_data/epic_recipes.txt")
+def load_all_recipe_files():
+    """Load multiple recipe files."""
 
-    for row in recipes_file:
+    #If you have an unwieldy number of files, put them in a directory and iterate over files.
+     
+    recipe_file1 = "./seed_data/epic_recipes.txt"
+    recipe_file2 = "./seed_data/menu_recipes.txt" 
+    recipe_file3 = "./seed_data/allr_recipes.txt"
+
+    load_recipes_from_file(recipe_file1)
+    load_recipes_from_file(recipe_file2)
+    load_recipes_from_file(recipe_file3)
+
+
+def load_recipes_from_file(recipe_filename):
+    """Load all recipes into database."""
+    
+    #recipes_file = open("./seed_data/epic_recipes.txt") #1/3 recipe files loaded here. Possible to unpack more than one file at a time?
+
+    for row in open(recipe_filename):
         recipe_info = row.rstrip().split("\t")
         
         cuisine = recipe_info[0]    
@@ -18,8 +32,7 @@ def load_recipes():
          
         print cuisine
         print ingredient       
-    
-        recipes 
+     
 #       #QUERY = "INSERT INTO  VALUES(user_id, email, password, age, zipcode)"
 #         db.session.add(user)
     
@@ -27,7 +40,7 @@ def load_recipes():
     
 
 def load_flavorcompounds():
-    """Load flavorcompounds from comp_info.tsv into database."""
+    """Load flavor compounds from comp_info.tsv into database."""
 
     compound_file= open("./seed_data/comp_info.tsv")
 
@@ -38,12 +51,14 @@ def load_flavorcompounds():
         name = compound_info[1]
         
         print compound_id
-        rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
-    #     db.session.add(compound)
+        print name 
+
+    #   compound_id = FlavorCompounds(compound_id=compound_id, name=name)
+    #   db.session.add(compound_id)
 
     # db.session.commit()
 
-# def load_ratings():
+#def load_categories():
 #     """Load ratings from u.data into database."""
     
 #     data_file = open("seed_data/u.data")
@@ -67,7 +82,7 @@ def load_flavorcompounds():
 if __name__ == "__main__":
 #     connect_to_db(app)
 
-    #load_recipes()
-    load_flavorcompounds()
+    load_all_recipe_files()
+    #load_recipes_from_files()
     # load_movies()
     # load_ratings()
