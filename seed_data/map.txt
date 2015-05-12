@@ -1,16 +1,16 @@
 Canada	NorthAmerican
 Turkey	MiddleEastern
-east_asian	EastAsian
+East_Asian	EastAsian
 Caribbean	LatinAmerican
 Bangladesh	SouthAsian
 chinese	EastAsian
-mexico	LatinAmerican
+Mexico	LatinAmerican
 Lebanon	MiddleEastern
-japanese	EastAsian
+Japanese	EastAsian
 North-African	African
 MiddleEastern	MiddleEastern
 Indian	SouthAsian
-asian	
+Asian	--
 Italy	SouthernEuropean
 EasternEuropean_Russian	EasternEuropean
 Israel	MiddleEastern
@@ -27,7 +27,7 @@ Central_SouthAmerican	LatinAmerican
 Cajun_Creole	NorthAmerican
 Belgium	WesternEuropean
 China	EastAsian
-korean	EastAsian
+Korean	EastAsian
 Germany	WesternEuropean
 South-America	LatinAmerican
 Spain	SouthernEuropean
@@ -63,7 +63,7 @@ Southern_SoulFood	NorthAmerican
 Malaysia	SoutheastAsian
 Austria	WesternEuropean
 English_Scottish	WesternEuropean
-Asian	
+asian	--
 Southwestern	NorthAmerican
 Japan	EastAsian
-italian	SouthernEuropean
+Italian	SouthernEuropean

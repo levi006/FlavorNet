@@ -29,9 +29,7 @@ def load_recipes_from_file(recipe_filename):
         
         cuisine = recipe_info[0]    
         ingredient = recipe_info[1:]    
-         
-        print cuisine
-        print ingredient       
+               
      
 #       #QUERY = "INSERT INTO  VALUES(user_id, email, password, age, zipcode)"
 #         db.session.add(user)
@@ -42,7 +40,7 @@ def load_recipes_from_file(recipe_filename):
 def load_flavorcompounds():
     """Load flavor compounds from comp_info.tsv into database."""
 
-    compound_file= open("./seed_data/comp_info.tsv")
+    flavor_compounds_file= open("./seed_data/comp_info.tsv")
 
     for row in compound_file:
         compound_info = row.strip().split("\t")
@@ -50,39 +48,94 @@ def load_flavorcompounds():
         compound_id = compound_info[0]
         name = compound_info[1]
         
-        print compound_id
-        print name 
+        #print compound_id
+        #print name 
 
     #   compound_id = FlavorCompounds(compound_id=compound_id, name=name)
     #   db.session.add(compound_id)
 
     # db.session.commit()
 
-#def load_categories():
-#     """Load ratings from u.data into database."""
-    
-#     data_file = open("seed_data/u.data")
+def load_ingredients_to_compounds():
+    """Load ingredients to flavor compounds information."""
 
-#     for row in data_file:
-#         if row:
-#             data_info = row.strip().split()
-#             user_id = data_info[0]    
-#             movie_id = data_info[1]    
-#             score = data_info[2]
-#             #timestamp = data_info[3]
+    ingr_comp_file = open("./seed_data/ingr_comp.tsv")
 
-#             #timestamp = timestamp.datetime.strptime(t_timestamp, ) #add something behind the trailing comma
-                    
+    for row in ingr_comp_file:
+        ingr_comp_info = row.strip().split("\t")
+
+        ingredient_id, compound_id = ingr_comp_info[0], ingr_comp_info[1]
+   
+
+        print ingredient_id, compound_id   
+
 #             rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
 #             db.session.add(rating)
     
 #     db.session.commit()
+
+def load_ingredients_to_categories():
+    """Load categories for all ingredients."""
+
+    categories_file = open("./seed_data/ingr_info.tsv")
+
+    for row in categories_file:
+        categories_info = row.strip().split("\t")
+
+        category_id, name, category = categories_info[0], categories_info[1], categories_info[2]
    
+
+        print category_id, name, category   
+
+#             rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
+#             db.session.add(rating)
+    
+#     db.session.commit()
+
+def load_ingredients_to_categories():
+    """Load categories for all ingredients."""
+
+    categories_file = open("./seed_data/ingr_info.tsv")
+
+    for row in categories_file:
+        categories_info = row.strip().split("\t")
+
+        category_id, name, category = categories_info[0], categories_info[1], categories_info[2]
+   
+
+        print category_id, name, category   
+
+#             rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
+#             db.session.add(rating)
+    
+#     db.session.commit()  
+
+def load_cuisines_to_regions():
+    """Load cuisines for all regions."""
+
+    regions_file = open("./seed_data/map.txt")
+
+    for row in regions_file:
+        regions_info = row.strip().split("\t")
+
+        cuisine, region = regions_info[0], regions_info[1]
+
+        if regions_info[1] == None:
+            regions_info = NULL
+   
+
+        print cuisine, region
+#             rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
+#             db.session.add(rating)
+    
+#     db.session.commit()  
 
 if __name__ == "__main__":
 #     connect_to_db(app)
 
-    load_all_recipe_files()
+    #load_all_recipe_files()
     #load_recipes_from_files()
-    # load_movies()
-    # load_ratings()
+    #load_flavorcompounds()
+    #load_ingredients_to_compounds()
+    #load_ingredients_to_categories()
+    load_cuisines_to_regions()
