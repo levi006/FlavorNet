@@ -1,7 +1,7 @@
 """Utility file to seed flavors database from Ahn datasets in seed_data/"""
 
-# from model import Recipe, Region, Ingredients, FlavorCompounds, Category, Ingredients_FlavorCompounds, Ingredients_Category, Recipes_Region, connect_to_db, db
-# from server import app
+from model import Ingredient, FlavorCompound, Category, FlavorCompoundIngredient, Region, Cuisine, connect_to_db, db
+from server import app
 
 
 
@@ -19,44 +19,81 @@ def load_all_recipe_files():
     load_recipes_from_file(recipe_file3)
 
 
-def load_recipes_from_file(recipe_filename):
-    """Load all recipes into database."""
+# def load_recipes_from_file(recipe_filename):
+#     """Load all recipes into database."""
     
-    #recipes_file = open("./seed_data/epic_recipes.txt") #1/3 recipe files loaded here. Possible to unpack more than one file at a time?
+#     #recipes_file = open("./seed_data/epic_recipes.txt") #1/3 recipe files loaded here. Possible to unpack more than one file at a time?
 
-    for row in open(recipe_filename):
-        recipe_info = row.rstrip().split("\t")
+#     for row in open(recipe_filename):
+#         recipe_info = row.rstrip().split("\t")
         
-        cuisine = recipe_info[0]    
-        ingredient = recipe_info[1:]    
-               
-     
-#       #QUERY = "INSERT INTO  VALUES(user_id, email, password, age, zipcode)"
-#         db.session.add(user)
+#         cuisine = recipe_info[0]    
+#         recipe_list = recipe_info[1:] 
+
+#         #split recipe_list into ingredients   
+         
+#         # print recipe       
+        
+#         recipe = Recipe(recipe_id=recipe_id, cuisine=cuisine)       
+#         db.session.add(recipe)
     
 #     db.session.commit()
+ 
+def load_ingredients():
+    """Load all categories."""
+
+    ingredients_file = open("./seed_data/ingr_info.tsv")
+
+    for row in ingredients_file:
+        ingredient_info = row.strip().split("\t")
+
+        ingredient_id, name = int(ingredient_info[0]), ingredient_info[1]  
+
+        #print type(ingredient_id)
+        #print type(name) 
+
+        ingredient = Ingredient(ingredient_id=ingredient_id, name=name)
+        db.session.add(ingredient)
     
+    db.session.commit()   
 
 def load_flavorcompounds():
     """Load flavor compounds from comp_info.tsv into database."""
 
     flavor_compounds_file= open("./seed_data/comp_info.tsv")
 
-    for row in compound_file:
+    for row in flavor_compounds_file:
         compound_info = row.strip().split("\t")
 
-        compound_id = compound_info[0]
+        compound_id = int(compound_info[0])
         name = compound_info[1]
         
-        #print compound_id
-        #print name 
+        #print type(compound_id)
+        # print name 
 
-    #   compound_id = FlavorCompounds(compound_id=compound_id, name=name)
-    #   db.session.add(compound_id)
+        FC_id = FlavorCompound(flavor_compound_id=compound_id, name=name)
+        db.session.add(FC_id)
 
-    # db.session.commit()
+    db.session.commit()
 
-def load_ingredients_to_compounds():
+def load_categories():
+    """Load all categories."""
+
+    categories_file = open("./seed_data/ingr_info.tsv")
+
+    for row in categories_file:
+        categories_info = row.strip().split("\t")
+
+        name = categories_info[2]
+   
+        #print ingredient, category   
+
+        category = Category(name=name)
+        db.session.add(category)
+    
+    db.session.commit() 
+
+def load_compounds_to_ingredient():
     """Load ingredients to flavor compounds information."""
 
     ingr_comp_file = open("./seed_data/ingr_comp.tsv")
@@ -67,75 +104,62 @@ def load_ingredients_to_compounds():
         ingredient_id, compound_id = ingr_comp_info[0], ingr_comp_info[1]
    
 
-        print ingredient_id, compound_id   
+        #print ingredient_id, compound_id   
 
-#             rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
-#             db.session.add(rating)
+        compound_ingredient = FlavorCompoundIngredient(ingredient_id=ingredient_id, compound_id=compound_id)
+        db.session.add(compound_ingredient)
     
-#     db.session.commit()
+    db.session.commit()
 
-def load_ingredients_to_categories():
-    """Load categories for all ingredients."""
 
-    categories_file = open("./seed_data/ingr_info.tsv")
+def load_cuisines():
+    """Load all cuisines."""
 
-    for row in categories_file:
-        categories_info = row.strip().split("\t")
+    cuisines_file = open("./seed_data/map.txt")
 
-        category_id, name, category = categories_info[0], categories_info[1], categories_info[2]
+    for row in cuisines_file:
+        cuisine_info = row.strip().split("\t")
+
+        cuisine_name, region = cuisine_info[0], cuisine_info[1]
+
+        if cuisine_info[1] == None:
+            cuisine_info = NULL
    
-
-        print category_id, name, category   
-
-#             rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
-#             db.session.add(rating)
+        #print cuisine, region
+        cuisine = Cuisine(name=cuisine_name)
     
-#     db.session.commit()
-
-def load_ingredients_to_categories():
-    """Load categories for all ingredients."""
-
-    categories_file = open("./seed_data/ingr_info.tsv")
-
-    for row in categories_file:
-        categories_info = row.strip().split("\t")
-
-        category_id, name, category = categories_info[0], categories_info[1], categories_info[2]
-   
-
-        print category_id, name, category   
-
-#             rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
-#             db.session.add(rating)
+        db.session.add(cuisine)
     
-#     db.session.commit()  
+    db.session.commit() 
 
-def load_cuisines_to_regions():
-    """Load cuisines for all regions."""
+def load_regions():
+    """Load all regions."""
 
     regions_file = open("./seed_data/map.txt")
 
     for row in regions_file:
         regions_info = row.strip().split("\t")
 
-        cuisine, region = regions_info[0], regions_info[1]
+        cuisine, region_name = regions_info[0], regions_info[1]
 
         if regions_info[1] == None:
             regions_info = NULL
-   
 
-        print cuisine, region
-#             rating = Rating(user_id=user_id, movie_id=movie_id, score=score)
-#             db.session.add(rating)
+        #print cuisine, region
+
+        region = Region(name=region_name) 
+        db.session.add(region)
     
-#     db.session.commit()  
+    db.session.commit()  
 
 if __name__ == "__main__":
-#     connect_to_db(app)
+    connect_to_db(app)
 
-    #load_all_recipe_files()
-    #load_recipes_from_files()
-    #load_flavorcompounds()
-    #load_ingredients_to_compounds()
-    #load_ingredients_to_categories()
-    load_cuisines_to_regions()
+    # load_all_recipe_files()
+    # load_recipes_from_file()
+    load_flavorcompounds()
+    load_compounds_to_ingredient()
+    load_ingredients()
+    load_categories()
+    load_cuisines()
+    load_regions()
