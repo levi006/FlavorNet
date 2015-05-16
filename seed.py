@@ -1,11 +1,11 @@
 """Utility file to seed flavors database from Ahn datasets in seed_data/"""
 
-from model import Ingredient, FlavorCompound, Category, FlavorCompoundIngredient, Region, Cuisine, connect_to_db, db
+from model import Ingredient, Recipe, RecipeIngredient, FlavorCompound, Category, FlavorCompoundIngredient, Region, Cuisine, connect_to_db, db
 from server import app
 
 
 
-def load_all_recipe_files():
+def parse_all_recipe_files():
     """Load multiple recipe files."""
 
     #If you have an unwieldy number of files, put them in a directory and iterate over files.
@@ -19,25 +19,34 @@ def load_all_recipe_files():
     load_recipes_from_file(recipe_file3)
 
 
-# def load_recipes_from_file(recipe_filename):
-#     """Load all recipes into database."""
+def load_recipes_from_file(recipe_filename):
+    """Load all recipes into database."""
     
-#     #recipes_file = open("./seed_data/epic_recipes.txt") #1/3 recipe files loaded here. Possible to unpack more than one file at a time?
-
-#     for row in open(recipe_filename):
-#         recipe_info = row.rstrip().split("\t")
+    for row in open(recipe_filename):
+        recipe_info = row.rstrip().split("\t")
         
-#         cuisine = recipe_info[0]    
-#         recipe_list = recipe_info[1:] 
+        cuisine, ingredients_list = recipe_info[0], recipe_info[1:]
 
-#         #split recipe_list into ingredients   
-         
-#         # print recipe       
+        cuisine_obj = Cuisine.query.filter_by(name = cuisine).first()
+
+        if cuisine_obj:
+            # cuisine_id = cuisine_obj.cuisine_id
+
+            recipe = Recipe(cuisine_id=cuisine_obj.id)
+            db.session.add(recipe)
         
-#         recipe = Recipe(recipe_id=recipe_id, cuisine=cuisine)       
-#         db.session.add(recipe)
-    
-#     db.session.commit()
+        db.session.commit()
+
+        
+        for ingredient_row in ingredients_list:
+            ingredient = ingredient_row[:]
+
+            ingredient_obj = Ingredient.query.filter_by(name = ingredient).first()
+
+            if ingredient_obj:
+                recipe_ingredient = RecipeIngredient(ingredient_id = ingredient_obj.id, recipe_id = recipe.id)
+                db.session.add(recipe_ingredient)
+        db.session.commit()             
  
 def load_ingredients():
     """Load all categories."""
@@ -52,7 +61,7 @@ def load_ingredients():
         #print type(ingredient_id)
         #print type(name) 
 
-        ingredient = Ingredient(ingredient_id=ingredient_id, name=name)
+        ingredient = Ingredient(id=ingredient_id, name=name)
         db.session.add(ingredient)
     
     db.session.commit()   
@@ -65,13 +74,12 @@ def load_flavorcompounds():
     for row in flavor_compounds_file:
         compound_info = row.strip().split("\t")
 
-        compound_id = int(compound_info[0])
-        name = compound_info[1]
+        compound_id, name = int(compound_info[0]), compound_info[1]
         
         #print type(compound_id)
-        # print name 
+        #print name 
 
-        FC_id = FlavorCompound(flavor_compound_id=compound_id, name=name)
+        FC_id = FlavorCompound(id=compound_id, name=name)
         db.session.add(FC_id)
 
     db.session.commit()
@@ -151,15 +159,17 @@ def load_regions():
         db.session.add(region)
     
     db.session.commit()  
+ 
 
 if __name__ == "__main__":
     connect_to_db(app)
 
-    # load_all_recipe_files()
-    # load_recipes_from_file()
-    load_flavorcompounds()
-    load_compounds_to_ingredient()
-    load_ingredients()
-    load_categories()
-    load_cuisines()
-    load_regions()
+    parse_all_recipe_files()
+    load_recipes_from_file()
+    # load_flavorcompounds()
+    # load_compounds_to_ingredient()
+    # load_ingredients()
+    # load_categories()
+    # load_cuisines()
+    # load_regions()
+   

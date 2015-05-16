@@ -8,19 +8,22 @@ db = SQLAlchemy()
 ##############################################################################
 # Model definitions
 
-# class Recipe(db.Model):
-#     """Recipe"""
+class Recipe(db.Model):
+    """Recipe"""
 
-#     __tablename__ = "recipes"
+    __tablename__ = "recipes"
 
-#     recipe_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     cuisine = db.Column(db.String(64), nullable=True, unique=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    cuisine_id = db.Column(db.Integer, db.ForeignKey("cuisines.id"))
     
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
+    cuisine = db.relationship("Cuisine",
+                           backref=db.backref("recipes"))
 
-#         return "<Recipe recipe=%s cuisine=%s>" % (
-#             self.recipe, self.cuisine)
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Recipe recipe=%s cuisine=%s>" % (
+            self.recipe, self.cuisine)
 
 
 class Ingredient(db.Model):
@@ -28,7 +31,7 @@ class Ingredient(db.Model):
 
     __tablename__ = "ingredients"
 
-    ingredient_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True)
     
 
@@ -44,7 +47,7 @@ class FlavorCompound(db.Model):
 
     __tablename__ = "flavor_compounds"
 
-    flavor_compound_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     
     def __repr__(self):
@@ -59,7 +62,7 @@ class Category(db.Model):
 
     __tablename__ = "categories"
 
-    category_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     
     def __repr__(self):
@@ -69,41 +72,12 @@ class Category(db.Model):
             self.name)
 
 
-# class IngredientsCategory(db.Model):
-#     """IngredientsCategory classifies the relationship between ingredients and what category they fall into."""
-
-#     __tablename__ = "ingredients_category"
-
-#     ingredient_category_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    
-#     category_id = db.Column(
-#         db.Integer,
-#         db.ForeignKey('categories.category_id'))
-    
-#     category = db.relationship(
-#           'Category',
-#            backref=db.backref('ingredients_category', order_by=id))
-
-
-#     ingredient_id = db.Column(
-#         db.Integer,
-#         db.ForeignKey('ingredients.ingredient_id'))
-    
-#     ingredient = db.relationship(
-#           'ingredient',
-#            backref=db.backref('ingredients', order_by=id))
-
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
-
-#        return  
-
 class FlavorCompoundIngredient(db.Model):
     """FlavorCompoundIngredient relates the flavor compounds present in each ingredient."""
 
     __tablename__ = "flavor_compounds_ingredient"
 
-    flavor_compound_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     ingredient_id = db.Column(db.Integer)
     compound_id = db.Column(db.Integer)
 
@@ -118,7 +92,7 @@ class Cuisine(db.Model):
 
     __tablename__ = "cuisines"
 
-    cuisine_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
     
     def __repr__(self):
@@ -132,7 +106,7 @@ class Region(db.Model):
 
     __tablename__ = "regions"
 
-    region_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(64), nullable=False) 
 
     def __repr__(self):
@@ -142,21 +116,28 @@ class Region(db.Model):
             self.region_id, self.name)
 
 
-# class CuisineRegion(db.Model):
-#     """CuisineRegion is the relationship between cuisine and region. For example, 
-#     Canadian and Southwestern cuisines would be considered North American."""
+class RecipeIngredient(db.Model):
+    """RecipeIngredient is the relationship between recipes and their ingredients."""
 
-#     __tablename__ = "cuisine_region"
+    __tablename__ = "recipe_ingredients"
 
-#     category_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     region_id = db.Column(db.Integer)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.id'))
+    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
+
     
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
+    recipe = db.relationship("Recipe",
+                           backref=db.backref("recipe_ingredients"))
 
-#         return "<Region region_id=%s name=%s cuisine=%s>" % (
-#             self.region_id, self.name, self.cuisine)     
 
+    ingredient = db.relationship("Ingredient",
+                            backref=db.backref("recipe_ingredients"))
+    
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<Recipe recipe_id=%s recipe_id=%s ingredient_id=%s>" % (
+            self.recipe_ingredients_id, self.recipe_id, self.cuisine_id)     
 
       
 ##############################################################################
@@ -164,7 +145,7 @@ class Region(db.Model):
 
 def connect_to_db(app):
     """Connect the database to our Flask app."""
-    # Configure to use our SQLite database
+
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flavornet.db'
     app.config['SQLALCHEMY_ECHO'] = True
     db.app = app
