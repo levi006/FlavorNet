@@ -33,7 +33,10 @@ class Ingredient(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True)
-    
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+
+    category = db.relationship("Category",
+                            backref=db.backref("ingredients"))
 
     def __repr__(self):
         """Provide helpful representation when printed."""

@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <h1>Ingredients</h1>
+  
+  <ul>
+  {% for ingredient in ingredients %}
+    <li>
+      <a href="/ingredients/{{ ingredient.ingredient_id }}">{{ ingredient.name }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+{% endblock %}
