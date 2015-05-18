@@ -24,6 +24,14 @@ def ingredient_list():
     ingredients = Ingredient.query.order_by('name').all()
     return render_template("ingredient_list.html", ingredients=ingredients)
 
+@app.route("/ingredients/<int:ingredient_id>", methods=['GET'])
+def ingredient_detail(ingredient_id):
+    """Show the flavor compounds present in ingredient."""
+
+    ingredient = Ingredient.query.get(id)
+
+    return render_template("ingredient.html", ingredient=ingredient)
+
 @app.route("/flavorcompounds")
 def flavorcompounds_list():
     """Show list of flavorcompounds."""

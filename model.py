@@ -1,6 +1,9 @@
 """Models and database functions for Flavornet project."""
 
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import *
+import seed
 
 db = SQLAlchemy()
 
@@ -22,8 +25,14 @@ class Recipe(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Recipe recipe=%s cuisine=%s>" % (
-            self.recipe, self.cuisine)
+        return "<Recipe id=%s cuisine=%s>" % (
+            self.id, self.cuisine)
+
+    def teardown(self):
+        table = Table('recipes', Base.metadata, autoload=True)
+        table.drop(db.engine)
+        table.create(db.engine)
+        print "teardown complete for recipes"
 
 
 class Ingredient(db.Model):
@@ -33,16 +42,16 @@ class Ingredient(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True)
-    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    # category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
 
-    category = db.relationship("Category",
-                            backref=db.backref("ingredients"))
+    # category = db.relationship("Category",
+    #                         backref=db.backref("ingredients"))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Ingredient ingredient_id=%s name=%s >" % (
-            self.ingredient_id, self.name)
+        return "<Ingredient id=%s name=%s >" % (
+            self.id, self.name)
 
 class FlavorCompound(db.Model):
     """Flavour compounds make up the flavor profile of an individual ingredient and 
@@ -56,8 +65,8 @@ class FlavorCompound(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<FlavorCompound flavor_compound_id=%s name=%s>" % (
-            self.flavor_compound_id, self.name)
+        return "<FlavorCompound id=%s name=%s>" % (
+            self.id, self.name)
 
 
 class Category(db.Model):
@@ -71,7 +80,7 @@ class Category(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Category category_id=%s name=%s>" % (
+        return "<Category id=%s name=%s>" % (
             self.name)
 
 
@@ -87,8 +96,8 @@ class FlavorCompoundIngredient(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<FlavorCompoundIngredient flavor_compound_id= %s, ingredient_id= %s, compound_id= %s>" (
-            self.flavor_compound_id, self.ingredient_id, self.compound_id)
+        return "<FlavorCompoundIngredient id= %s, ingredient_id= %s, compound_id= %s>" (
+            self.id, self.ingredient_id, self.compound_id)
 
 class Cuisine(db.Model):
     """Recipes fall under Cuisines."""
@@ -101,8 +110,8 @@ class Cuisine(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
         
-        return "<Cuisine cuisine_id=%s name=%s>" % (
-            self.cuisine_id, self.name)
+        return "<Cuisine id=%s name=%s>" % (
+            self.id, self.name)
 
 class Region(db.Model):
     """Region(s) that a recipe or cuisine is associated with."""
@@ -115,8 +124,8 @@ class Region(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Region region_id=%s name=%s>" % (
-            self.region_id, self.name)
+        return "<Region id=%s name=%s>" % (
+            self.id, self.name)
 
 
 class RecipeIngredient(db.Model):
@@ -139,8 +148,8 @@ class RecipeIngredient(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<Recipe recipe_id=%s recipe_id=%s ingredient_id=%s>" % (
-            self.recipe_ingredients_id, self.recipe_id, self.cuisine_id)     
+        return "<Recipe id=%s recipe_id=%s ingredient_id=%s>" % (
+            self.id, self.recipe_id, self.cuisine_id)     
 
       
 ##############################################################################
@@ -154,11 +163,13 @@ def connect_to_db(app):
     db.app = app
     db.init_app(app)
 
-
 if __name__ == "__main__":
    
     from flask import Flask
     app = Flask(__name__)
 
     connect_to_db(app)
+
+    Base = declarative_base()
+    Base.metadata.bind = db.engine
     print "Connected to DB."

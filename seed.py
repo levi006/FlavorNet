@@ -4,7 +4,6 @@ from model import Ingredient, Recipe, RecipeIngredient, FlavorCompound, Category
 from server import app
 
 
-
 def parse_all_recipe_files():
     """Load multiple recipe files."""
 
@@ -19,11 +18,15 @@ def parse_all_recipe_files():
     load_recipes_from_file(recipe_file3)
 
 
-def load_recipes_from_file(recipe_filename):
+def load_recipes_from_file(recipe_filename="./seed_data/epic_recipes.txt"):
     """Load all recipes into database."""
-    
+
+    connect_to_db(app)
+
     for row in open(recipe_filename):
         recipe_info = row.rstrip().split("\t")
+
+        print recipe_info 
         
         cuisine, ingredients_list = recipe_info[0], recipe_info[1:]
 
@@ -164,8 +167,9 @@ def load_regions():
 if __name__ == "__main__":
     connect_to_db(app)
 
-    parse_all_recipe_files()
-    load_recipes_from_file()
+    teardown()
+    # parse_all_recipe_files()
+    # load_recipes_from_file()
     # load_flavorcompounds()
     # load_compounds_to_ingredient()
     # load_ingredients()
