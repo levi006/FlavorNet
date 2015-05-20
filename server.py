@@ -33,18 +33,21 @@ def ingredient_detail(id):
     """Show the flavor compounds present in ingredient."""
 
     ingredient = Ingredient.query.get(id)
-    fcis = FlavorCompoundIngredient.query.filter_by(ingredient_id=id).all()
+    fcis_list = FlavorCompoundIngredient.query.filter_by(ingredient_id=id).all()
 
     return render_template("ingredient_detail.html", 
                             ingredient=ingredient, 
-                            fcis=fcis)
+                            fcis_list=fcis_list)
 
 
 @app.route("/flavorcompounds")
-def flavorcompounds_list():
+def flavorcompounds_list(id):
     """Show list of flavorcompounds."""
 
-    flavorcompounds = FlavorCompound.query.order_by().all()
+    flavorcompounds = FlavorCompound.query.filter_by(id).all()
+    ingr_obj = FlavorCompoundIngredient.query.filter_by(compound_id=id).all()
+
+
     return render_template("flavorcompound_list.html", flavorcompounds=flavorcompounds)
 
 
