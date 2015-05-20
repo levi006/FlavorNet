@@ -3,7 +3,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import *
-import seed
+#import seed
 
 db = SQLAlchemy()
 
@@ -28,7 +28,7 @@ class Recipe(db.Model):
         return "<Recipe id=%s cuisine=%s>" % (
             self.id, self.cuisine)
 
-    def teardown(self):
+    def tearDown(self):
         table = Table('recipes', Base.metadata, autoload=True)
         table.drop(db.engine)
         table.create(db.engine)
@@ -42,16 +42,27 @@ class Ingredient(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True)
-    # category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    # fc_name= db.Column(db.Integer, db.ForeignKey('flavor_compounds.name'))
 
-    # category = db.relationship("Category",
-    #                         backref=db.backref("ingredients"))
+    # fc = db.relationship('FlavorCompound',
+    #                         backref=db.backref('flavor_compounds'))
+    
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+
+    category = db.relationship("Category",
+                             backref=db.backref("ingredients"))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
         return "<Ingredient id=%s name=%s >" % (
             self.id, self.name)
+
+    def tearDown(self):
+        table = Table('ingredients', Base.metadata, autoload=True)
+        table.drop(db.engine)
+        table.create(db.engine)
+        print "Teardown complete for ingredients"    
 
 class FlavorCompound(db.Model):
     """Flavour compounds make up the flavor profile of an individual ingredient and 
@@ -61,6 +72,13 @@ class FlavorCompound(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
+
+    # ingr_name= db.Column(db.Integer, db.ForeignKey("ingredient.name"))
+
+    # ingredient = db.relationship('Ingredient',
+    #                         backref=db.backref("flavor_compounds"))
+    
+
     
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -90,13 +108,20 @@ class FlavorCompoundIngredient(db.Model):
     __tablename__ = "flavor_compounds_ingredient"
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    ingredient_id = db.Column(db.Integer)
-    compound_id = db.Column(db.Integer)
+    ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
+    compound_id = db.Column(db.Integer, db.ForeignKey('flavor_compounds.id'))
+
+
+    ingredient = db.relationship("Ingredient",
+                           backref=db.backref("flavor_compounds_ingredients"))
+
+    compound = db.relationship("FlavorCompound",
+                            backref=db.backref("flavor_compounds_ingredients"))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<FlavorCompoundIngredient id= %s, ingredient_id= %s, compound_id= %s>" (
+        return "<FlavorCompoundIngredient id=%s, ingredient_id = %s, compound_id= %s >" % (
             self.id, self.ingredient_id, self.compound_id)
 
 class Cuisine(db.Model):
@@ -112,6 +137,12 @@ class Cuisine(db.Model):
         
         return "<Cuisine id=%s name=%s>" % (
             self.id, self.name)
+
+    def teardown(self):
+        table = Table('cuisines', Base.metadata, autoload=True)
+        table.drop(db.engine)
+        table.create(db.engine)
+        print "Teardown complete for cuisines"
 
 class Region(db.Model):
     """Region(s) that a recipe or cuisine is associated with."""
@@ -144,14 +175,42 @@ class RecipeIngredient(db.Model):
 
     ingredient = db.relationship("Ingredient",
                             backref=db.backref("recipe_ingredients"))
+
+    def tearDown(self):
+        table = Table('recipe_ingredients', Base.metadata, autoload=True)
+        table.drop(db.engine)
+        table.create(db.engine)
+        print "teardown complete for recipe_ingredients"
     
     def __repr__(self):
         """Provide helpful representation when printed."""
 
         return "<Recipe id=%s recipe_id=%s ingredient_id=%s>" % (
-            self.id, self.recipe_id, self.cuisine_id)     
+            self.id, self.recipe_id, self.ingredient_id)     
 
-      
+class IngredientSimiliarity(db.Model):
+    """RecipeIngredient is the relationship between recipes and their ingredients."""
+
+    __tablename__ = "ingredient_similarities"
+
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    ingr_0 = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
+    ingr_1 = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
+    shared_fcs = db.Column(db.Integer, nullable=False)
+    
+    ingr_0 = db.relationship("Ingredient",
+                           backref=db.backref("ingredient_similarties"))
+
+
+    ingr_1 = db.relationship("Ingredient",
+                            backref=db.backref("ingredient_similarities"))
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return "<IngredientSimiliarity id=%s ingr_0=%s ingr_1=%s shared_fcs=%s>" % (
+        self.id, self.ingr_0, self.ingr_1, self.shared_fcs)
+  
 ##############################################################################
 # Helper functions
 

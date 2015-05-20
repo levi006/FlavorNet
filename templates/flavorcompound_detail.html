@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <h1>{{ flavorcompound.name }}</h1>
+  
+  {% for ingredient in ingredients %}
+    <li> {{ ingredient.name }}
+      <a href="/ingredients/{{ ingredient.id }}">{{ ingredient.name }}</a>  
+    </li>
+  {% endfor %}
+
+  {% endblock %}

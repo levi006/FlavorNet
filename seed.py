@@ -1,6 +1,6 @@
 """Utility file to seed flavors database from Ahn datasets in seed_data/"""
 
-from model import Ingredient, Recipe, RecipeIngredient, FlavorCompound, Category, FlavorCompoundIngredient, Region, Cuisine, connect_to_db, db
+from model import Recipe, RecipeIngredient, Ingredient, FlavorCompound, Category, FlavorCompoundIngredient, Cuisine, Region, connect_to_db, db
 from server import app
 
 
@@ -18,15 +18,13 @@ def parse_all_recipe_files():
     load_recipes_from_file(recipe_file3)
 
 
-def load_recipes_from_file(recipe_filename="./seed_data/epic_recipes.txt"):
+def load_recipes_from_file(recipe_filename):
     """Load all recipes into database."""
-
-    connect_to_db(app)
 
     for row in open(recipe_filename):
         recipe_info = row.rstrip().split("\t")
 
-        print recipe_info 
+        # print recipe_info 
         
         cuisine, ingredients_list = recipe_info[0], recipe_info[1:]
 
@@ -40,7 +38,6 @@ def load_recipes_from_file(recipe_filename="./seed_data/epic_recipes.txt"):
         
         db.session.commit()
 
-        
         for ingredient_row in ingredients_list:
             ingredient = ingredient_row[:]
 
@@ -61,8 +58,8 @@ def load_ingredients():
 
         ingredient_id, name = int(ingredient_info[0]), ingredient_info[1]  
 
-        #print type(ingredient_id)
-        #print type(name) 
+        print (ingredient_id)
+        print (name) 
 
         ingredient = Ingredient(id=ingredient_id, name=name)
         db.session.add(ingredient)
@@ -163,13 +160,11 @@ def load_regions():
     
     db.session.commit()  
  
-
 if __name__ == "__main__":
     connect_to_db(app)
 
-    teardown()
-    # parse_all_recipe_files()
-    # load_recipes_from_file()
+    parse_all_recipe_files()
+    load_recipes_from_file()
     # load_flavorcompounds()
     # load_compounds_to_ingredient()
     # load_ingredients()
