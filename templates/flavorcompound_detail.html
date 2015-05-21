@@ -3,10 +3,14 @@
 
   <h1>{{ flavorcompound.name }}</h1>
   
-  {% for ingredient in ingredients %}
-    <li> {{ ingredient.name }}
-      <a href="/ingredients/{{ ingredient.id }}">{{ ingredient.name }}</a>  
-    </li>
-  {% endfor %}
+<ul>
 
-  {% endblock %}
+{% for ingredient in ingredients_list %}
+
+	<li> {{ ingredient.ingredient.name }} </li>
+ 
+{% endfor %}
+
+</ul>
+
+{% endblock %}
