@@ -7,24 +7,37 @@ from model import connect_to_db, db, Ingredient, FlavorCompound, FlavorCompoundI
 
 
 app = Flask(__name__)
-
-# Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
 
 
 @app.route('/')
 def index():
     """Homepage."""
-    id = request.args.get("ingr_zero")
-    # cuisine = request.args.get("cuisine")
-
+    
     return render_template("homepage.html")
+
+
+# @app.route("/ingredients/pairs")
+# def ingredient_pairs():
+#     """Show list of ingredients that pair with ingr_zero."""
+    
+#     ingr_zero = request.form["ingr_zero"]
+#     # cuisine = request.form.get["cuisine"]
+
+#     ingredients = Ingredient.query.order_by(ingr_zero='name').all()
+#     print ingredients
+    
+#     return redirect("/ingredients/pairs",
+#                      ingr_zero=ingr_zero)
+ 
+
 
 @app.route("/ingredients")
 def ingredient_list():
     """Show list of all ingredients."""
 
     ingredients = Ingredient.query.order_by('name').all()
+    
     return render_template(
         "ingredient_list.html",
          ingredients=ingredients

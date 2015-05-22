@@ -73,11 +73,9 @@ class FlavorCompound(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(64), nullable=False)
 
-    # ingr_name= db.Column(db.Integer, db.ForeignKey("ingredient.name"))
-
-    # ingredient = db.relationship('Ingredient',
-    #                         backref=db.backref("flavor_compounds"))
-    
+    ingredients = db.relationship("Ingredient", 
+                            secondary="flavor_compounds_ingredient",
+                            backref=db.backref("flavor_compounds")) #classname, table, table
 
     
     def __repr__(self):
@@ -112,11 +110,13 @@ class FlavorCompoundIngredient(db.Model):
     compound_id = db.Column(db.Integer, db.ForeignKey('flavor_compounds.id'))
 
 
-    ingredient = db.relationship("Ingredient",
-                           backref=db.backref("flavor_compounds_ingredients"))
+    # ingredient = db.relationship("Ingredient",
+    #                        backref=db.backref("flavor_compounds_ingredients"))
 
-    compound = db.relationship("FlavorCompound",
-                            backref=db.backref("flavor_compounds_ingredients"))
+    # compound = db.relationship("FlavorCompound",
+    #                         backref=db.backref("flavor_compounds_ingredients"))
+
+
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -188,28 +188,29 @@ class RecipeIngredient(db.Model):
         return "<Recipe id=%s recipe_id=%s ingredient_id=%s>" % (
             self.id, self.recipe_id, self.ingredient_id)     
 
-# class IngredientSimiliarity(db.Model):
-#     """RecipeIngredient is the relationship between recipes and their ingredients."""
+class IngredientSimilarity(db.Model):
+    """Tracks how many compounds two ingredients have in common."""
 
-#     __tablename__ = "ingredient_similarities"
+    __tablename__ = "ingredient_similarities"
 
-#     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     ingr_zero = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
-#     ingr_one = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
-#     shared_fcs = db.Column(db.Integer, nullable=False)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    ingr_zero = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
+    ingr_one = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
+    test = db.Column(db.Integer)
+    shared_fcs = db.Column(db.Integer, nullable=False)
     
-#     ingr_zero = db.relationship("Ingredient",
-#                            backref=db.backref("ingredient_similarties"))
+    ingr_zero = db.relationship("Ingredient",
+                           backref=db.backref("ingredient_similarities"))
 
 
-#     ingr_one = db.relationship("Ingredient",
-#                             backref=db.backref("ingredient_similarities"))
+    ingr_one = db.relationship("Ingredient",
+                            backref=db.backref("ingredient_similarities"))
 
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
+    def __repr__(self):
+        """Provide helpful representation when printed."""
 
-#         return "<IngredientSimiliarity id=%s ingr_0=%s ingr_1=%s shared_fcs=%s>" % (
-#         self.id, self.ingr_zero, self.ingr_one, self.shared_fcs)
+        return "<IngredientSimilarity id=%s ingr_0=%s ingr_1=%s shared_fcs=%s>" % (
+        self.id, self.ingr_zero, self.ingr_one, self.shared_fcs)
 
 # class IngredientSimiliarity(db.Model):
 #     """RecipeIngredient is the relationship between recipes and their ingredients."""

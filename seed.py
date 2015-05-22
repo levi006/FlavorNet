@@ -2,6 +2,7 @@
 
 from model import Recipe, RecipeIngredient, Ingredient, FlavorCompound, Category, FlavorCompoundIngredient, Cuisine, Region, connect_to_db, db
 from server import app
+from sqlalchemy import func
 
 
 def parse_all_recipe_files():
@@ -159,16 +160,52 @@ def load_regions():
         db.session.add(region)
     
     db.session.commit()  
+
+
+def load_ingredient_similarities():
+
+    i = 1
+
+ingredients = Ingredient.query(func.count(id=i))
+# print ingredients
+
+for i in range(ingredients):
+
+    ingr_input = Ingredient.query.filter_by(id=i).all() #returns list of compounds
+    ingr_zero = IngredientSimiliarity(ingr_zero=ingr_input)
+
+    db.session.add(ingr_zero)
+    # db.session.commit()
+    
+    for j in range(ingredients):
+        j = j + 1
+
+        ingr_input_two = Ingredient.query.filter_by(id=j).first()
+        ingr_one = IngredientSimilarity(ingr_one=ingr_input_two)
+
+    # print ingr_zero
+    # print ingr_one
+
+        db.session.add(ingr_one)
+        # db.session.commit()
+
+    shared_compounds = len(set(ingr_zero[0].flavor_compounds) & set(ingr_one[0].flavor_compounds))
+    shared_compounds = IngredientSimilarity(shared_compounds=shared_compounds)
+
+    db.session.add(shared_compounds)
+
+    db.session.commit()    
  
 if __name__ == "__main__":
     connect_to_db(app)
 
-    parse_all_recipe_files()
-    load_recipes_from_file()
+    # parse_all_recipe_files()
+    # load_recipes_from_file()
     # load_flavorcompounds()
     # load_compounds_to_ingredient()
     # load_ingredients()
     # load_categories()
     # load_cuisines()
     # load_regions()
+    load_ingredient_similarities()
    
