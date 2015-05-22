@@ -196,15 +196,14 @@ class IngredientSimilarity(db.Model):
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     ingr_zero = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
     ingr_one = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
-    test = db.Column(db.Integer)
     shared_fcs = db.Column(db.Integer, nullable=False)
     
-    ingr_zero = db.relationship("Ingredient",
-                           backref=db.backref("ingredient_similarities"))
+    # ingr_zero = db.relationship("Ingredient",
+    #                        backref=db.backref("ingredient_similarities"))
 
 
-    ingr_one = db.relationship("Ingredient",
-                            backref=db.backref("ingredient_similarities"))
+    # ingr_one = db.relationship("Ingredient",
+    #                         backref=db.backref("ingredient_similarities"))
 
     def __repr__(self):
         """Provide helpful representation when printed."""

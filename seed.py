@@ -1,8 +1,10 @@
-"""Utility file to seed flavors database from Ahn datasets in seed_data/"""
+"""Utility file to seed flavors database from datasets in seed_data/"""
 
-from model import Recipe, RecipeIngredient, Ingredient, FlavorCompound, Category, FlavorCompoundIngredient, Cuisine, Region, connect_to_db, db
+from model import Recipe, RecipeIngredient, Ingredient, FlavorCompound, Category, FlavorCompoundIngredient, Cuisine, Region, IngredientSimilarity, connect_to_db, db
 from server import app
-from sqlalchemy import func
+from itertools import combinations, permutations
+# connect_to_db(app)
+
 
 
 def parse_all_recipe_files():
@@ -111,7 +113,6 @@ def load_compounds_to_ingredient():
         ingr_comp_info = row.strip().split("\t")
 
         ingredient_id, compound_id = ingr_comp_info[0], ingr_comp_info[1]
-   
 
         #print ingredient_id, compound_id   
 
@@ -163,42 +164,48 @@ def load_regions():
 
 
 def load_ingredient_similarities():
+    """Loading ingredient pairs andd the number of flavor compounds they have in common.""" 
 
-    i = 1
-
-ingredients = Ingredient.query(func.count(id=i))
-# print ingredients
-
-for i in range(ingredients):
-
-    ingr_input = Ingredient.query.filter_by(id=i).all() #returns list of compounds
-    ingr_zero = IngredientSimiliarity(ingr_zero=ingr_input)
-
-    db.session.add(ingr_zero)
-    # db.session.commit()
+    ingr_combos = combinations(Ingredient.query.all(),2)
     
-    for j in range(ingredients):
-        j = j + 1
+    for combo in ingr_combos:
+        # combo = tuple (ingr_obj, ingr_obj)
+        ingr_zero=combo[0]
+        ingr_one=combo[1]
 
-        ingr_input_two = Ingredient.query.filter_by(id=j).first()
-        ingr_one = IngredientSimilarity(ingr_one=ingr_input_two)
+        number_shared_compounds = len(set(combo[0].flavor_compounds) & set(combo[1].flavor_compounds))
 
-    # print ingr_zero
-    # print ingr_one
 
-        db.session.add(ingr_one)
-        # db.session.commit()
+        shared_compounds = IngredientSimilarity(ingr_zero=ingr_zero.id,
+                                                ingr_one=ingr_one.id, 
+                                                shared_fcs=number_shared_compounds)
 
-    shared_compounds = len(set(ingr_zero[0].flavor_compounds) & set(ingr_one[0].flavor_compounds))
-    shared_compounds = IngredientSimilarity(shared_compounds=shared_compounds)
+        db.session.add(shared_compounds)
+    db.session.commit()  
 
-    db.session.add(shared_compounds)
+def load_ingredient_similarities_():
 
-    db.session.commit()    
- 
+    ingr_combos = combinations(Ingredient.query.all(),2)
+    
+    for combo in ingr_combos:
+        # combo = tuple (ingr_obj, ingr_obj)
+        ingr_zero=combo[0]
+        ingr_one=combo[1]
+
+        number_shared_compounds = len(set(combo[0].flavor_compounds) & set(combo[1].flavor_compounds))
+
+
+        shared_compounds = IngredientSimilarity(ingr_zero=ingr_zero.id,
+                                                ingr_one=ingr_one.id, 
+                                                shared_fcs=number_shared_compounds)
+
+        db.session.add(shared_compounds)
+    db.session.commit() 
+
 if __name__ == "__main__":
     connect_to_db(app)
 
+ 
     # parse_all_recipe_files()
     # load_recipes_from_file()
     # load_flavorcompounds()
