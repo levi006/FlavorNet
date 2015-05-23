@@ -1,6 +1,6 @@
 """Utility file to seed flavors database from datasets in seed_data/"""
 
-from model import Recipe, RecipeIngredient, Ingredient, FlavorCompound, Category, FlavorCompoundIngredient, Cuisine, Region, IngredientSimilarity, connect_to_db, db
+from model import Recipe, RecipeIngredient, Ingredient, FlavorCompound, Category, FlavorCompoundIngredient, Cuisine, Region, IngredientSimilarity, IngredientSimCuisine, connect_to_db, db
 from server import app
 from itertools import combinations, permutations
 # connect_to_db(app)
@@ -166,7 +166,7 @@ def load_regions():
 def load_ingredient_similarities():
     """Loading ingredient pairs andd the number of flavor compounds they have in common.""" 
 
-    ingr_combos = combinations(Ingredient.query.all(),2)
+    ingr_combos = combinations(Ingredient.query.all(),)
     
     for combo in ingr_combos:
         # combo = tuple (ingr_obj, ingr_obj)
@@ -183,24 +183,78 @@ def load_ingredient_similarities():
         db.session.add(shared_compounds)
     db.session.commit()  
 
-def load_ingredient_similarities_():
+def load_ingredient_sim_cuisines():
+    """Loading ingredient pairs, number of shared compounds, and cuisine.""" 
 
-    ingr_combos = combinations(Ingredient.query.all(),2)
+
+    recipes = Recipe.query.all()
     
-    for combo in ingr_combos:
-        # combo = tuple (ingr_obj, ingr_obj)
-        ingr_zero=combo[0]
-        ingr_one=combo[1]
+    recipes_seen = 0
+    
+    for recipe in recipes:
 
-        number_shared_compounds = len(set(combo[0].flavor_compounds) & set(combo[1].flavor_compounds))
+        recipes_seen += 1
+
+        ingredient_ids = [ri.ingredient_id for ri in recipe.recipe_ingredients] 
+
+        combos = combinations(sorted(ingredient_ids), 2)
+
+        ingr_combos = {}
+
+        for combo in combos:
+            ingr_zero, ingr_one = combo
+            cuisine_id = recipe.cuisine_id
+            
+            ingr_combo = (ingr_zero, ingr_one, cuisine_id)
+            
+            value = ingr_combos.get(ingr_combo, 0) + 1
+
+            ingr_combos[ingr_combo] = value
+
+            # if ingr_combo in ingr_combos:
+            #     ingr_combos[ingr_combo] += 1
+            # else:
+            #     ingr_combos[ingr_combo] = 1
+
+        if(recipes_seen % 100 == 0):
+            print(recipes_seen)
 
 
-        shared_compounds = IngredientSimilarity(ingr_zero=ingr_zero.id,
-                                                ingr_one=ingr_one.id, 
-                                                shared_fcs=number_shared_compounds)
+    for ingr_combo in ingr_combos:
+        ingr_zero, ingr_one, cuisine = ingr_combo[0:3]
+        count = ingr_combos.get((ingr_zero, ingr_one, cuisine))
 
-        db.session.add(shared_compounds)
-    db.session.commit() 
+        ingrsimcuis = IngredientSimCuisine(ingr_zero=ingr_zero,
+                                ingr_one=ingr_one,
+                                cuisine=cuisine,
+                                count=count)
+        db.session.add(ingrsimcuis)
+    db.session.commit()
+    
+    # print ingr_combos.keys()[2]
+    # print len(ingr_combos) 
+
+            # ingrsimcuis =  IngredientSimCuisine.query.filter_by(ingr_zero=ingr_zero)\
+            #                                          .filter_by(ingr_one=ingr_one)\
+            #                                          .filter_by(cuisine=cuisine_id).first()
+            # if ingrsimcuis:
+            #     ingrsimcuis.count += 1
+
+            # else:
+            #     ingrsimcuis = IngredientSimCuisine(ingr_zero=ingr_zero,
+            #                         ingr_one=ingr_one,
+            #                         cuisine=cuisine_id)
+
+            #     db.session.add(ingrsimcuis)
+            
+    # x += 1
+    # print "*" * (50)
+    # print x 
+    # print "*" * (50)
+
+    #    db.session.commit()
+    # db.session.commit()   
+                                        
 
 if __name__ == "__main__":
     connect_to_db(app)
@@ -214,5 +268,6 @@ if __name__ == "__main__":
     # load_categories()
     # load_cuisines()
     # load_regions()
-    load_ingredient_similarities()
+    # load_ingredient_similarities()
+    load_ingredient_sim_cuisines()
    

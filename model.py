@@ -3,7 +3,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import *
-#import seed
+# import seed
 
 db = SQLAlchemy()
 
@@ -211,33 +211,39 @@ class IngredientSimilarity(db.Model):
         return "<IngredientSimilarity id=%s ingr_0=%s ingr_1=%s shared_fcs=%s>" % (
         self.id, self.ingr_zero, self.ingr_one, self.shared_fcs)
 
-# class IngredientSimiliarity(db.Model):
-#     """RecipeIngredient is the relationship between recipes and their ingredients."""
+class IngredientSimCuisine(db.Model):
+    """ is the relationship between recipes and their ingredients."""
 
-#     __tablename__ = "ingr_similarities_in_cuisines"
+    __tablename__ = "ingr_sims_in_cuisines"
 
-#     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-#     ingr_zero = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
-#     ingr_one = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
-#     cuisine = db.Column(db.Integer, db.ForeignKey('cuisine.id'))
-#     shared_fcs = db.Column(db.Integer, nullable=False)
+    id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    ingr_zero = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
+    ingr_one = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
+    cuisine = db.Column(db.Integer, db.ForeignKey('cuisines.id'))
+    count = db.Column(db.Integer, nullable=False, default=1)
     
-#     ingr_zero = db.relationship("Ingredient",
-#                            backref=db.backref("ingredient_similarties"))
+    # ingr_zero = db.relationship("Ingredient",
+    #                        backref=db.backref("ingr_similarities_in_cuisines"))
 
 
-#     ingr_one = db.relationship("Ingredient",
-#                             backref=db.backref("ingr_similarities_in_cuisines"))
+    # ingr_one = db.relationship("Ingredient",
+    #                         backref=db.backref("ingr_similarities_in_cuisines"))
 
-#     cuisine = db.relationship("Cuisine",
-#                             backref=db.backref("ingr_similarities_in_cuisines"))
+    # cuisine = db.relationship("Cuisine",
+    #                         backref=db.backref("ingr_similarities_in_cuisines"))
 
-#     def __repr__(self):
-#         """Provide helpful representation when printed."""
+    def __repr__(self):
+        """Provide helpful representation when printed."""
 
-#         return "<IngredientSimiliarity id=%s ingr_0=%s ingr_1=%s shared_fcs=%s>" % (
-#         self.id, self.ingr_0, self.ingr_1, self.shared_fcs)
+        return "<IngredientSimiliarity id=%s ingr_0=%s ingr_1=%s shared_fcs=%s>" % (
+        self.id, self.ingr_0, self.ingr_1, self.shared_fcs)
   
+    def tearDown(self):
+        table = Table('ingr_sims_in_cuisines', Base.metadata, autoload=True)
+        table.drop(db.engine)
+        table.create(db.engine)
+        print "teardown complete for ingr_sims_in_cuisines"  
+
 ##############################################################################
 # Helper functions
 
@@ -245,7 +251,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flavornet.db'
-    app.config['SQLALCHEMY_ECHO'] = True
+    app.config['SQLALCHEMY_ECHO'] = False
     db.app = app
     db.init_app(app)
 
