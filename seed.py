@@ -3,6 +3,7 @@
 from model import Recipe, RecipeIngredient, Ingredient, FlavorCompound, Category, FlavorCompoundIngredient, Cuisine, Region, IngredientSimilarity, IngredientSimCuisine, connect_to_db, db
 from server import app
 from itertools import combinations, permutations
+from datetime import datetime
 # connect_to_db(app)
 
 
@@ -187,9 +188,14 @@ def load_ingredient_sim_cuisines():
     """Loading ingredient pairs, number of shared compounds, and cuisine.""" 
 
 
+    # recipes = Recipe.query.all()
+    print "started recipe query at: " + str(datetime.now())
     recipes = Recipe.query.all()
-    
+    print "Queried recipe list at: " + str(datetime.now())
+
     recipes_seen = 0
+
+    ingr_combos = {}
     
     for recipe in recipes:
 
@@ -199,26 +205,21 @@ def load_ingredient_sim_cuisines():
 
         combos = combinations(sorted(ingredient_ids), 2)
 
-        ingr_combos = {}
-
         for combo in combos:
             ingr_zero, ingr_one = combo
             cuisine_id = recipe.cuisine_id
             
             ingr_combo = (ingr_zero, ingr_one, cuisine_id)
-            
-            value = ingr_combos.get(ingr_combo, 0) + 1
+                            
+            ingr_combos[ingr_combo] = ingr_combos.get(ingr_combo, 0) + 1
 
-            ingr_combos[ingr_combo] = value
+        # if(recipes_seen % 100 == 0):
+        #    print(recipes_seen)
+    # finished constructing the in-memory dictionary
 
-            # if ingr_combo in ingr_combos:
-            #     ingr_combos[ingr_combo] += 1
-            # else:
-            #     ingr_combos[ingr_combo] = 1
+    print "Finished constructing map at: "  + str(datetime.now())
 
-        if(recipes_seen % 100 == 0):
-            print(recipes_seen)
-
+    combos_seen = 0
 
     for ingr_combo in ingr_combos:
         ingr_zero, ingr_one, cuisine = ingr_combo[0:3]
@@ -228,7 +229,18 @@ def load_ingredient_sim_cuisines():
                                 ingr_one=ingr_one,
                                 cuisine=cuisine,
                                 count=count)
+        
+        # print "Inserting row: " + str(ingr_zero) + " " + str(ingr_one)\
+        #         + " " + str(cuisine) + " " + str(count) 
+        
         db.session.add(ingrsimcuis)
+        combos_seen += 1
+
+        if(combos_seen % 500 == 0):
+            print "Starting commit after seeing " + str(combos_seen) + " ingredient combos at: "  + str(datetime.now())
+            db.session.commit()
+            print "Finished commit "  + str(datetime.now())
+
     db.session.commit()
     
     # print ingr_combos.keys()[2]
@@ -245,14 +257,13 @@ def load_ingredient_sim_cuisines():
             #                         ingr_one=ingr_one,
             #                         cuisine=cuisine_id)
 
-            #     db.session.add(ingrsimcuis)
-            
-    # x += 1
-    # print "*" * (50)
-    # print x 
-    # print "*" * (50)
+       #      db.session.add(ingrsimcuis)
+       #  db.session.commit()
+        
+       # if(recipes_seen % 100 == 0):
+       #      print(recipes_seen)
 
-    #    db.session.commit()
+                
     # db.session.commit()   
                                         
 

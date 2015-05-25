@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <h1>Similar Ingredients</h1>
+  
+	{{ ingr_zero_name }}
+
+	<br><br>
+  
+  {% for ingr_one in ingr_one_list %}
+
+	<ul>{{ ingr_one }}</ul>
+
+	{% endfor %}
+
+{% endblock %}

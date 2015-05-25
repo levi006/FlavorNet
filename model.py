@@ -110,11 +110,11 @@ class FlavorCompoundIngredient(db.Model):
     compound_id = db.Column(db.Integer, db.ForeignKey('flavor_compounds.id'))
 
 
-    # ingredient = db.relationship("Ingredient",
-    #                        backref=db.backref("flavor_compounds_ingredients"))
+    ingredient = db.relationship("Ingredient",
+                           backref=db.backref("flavor_compounds_ingredients"))
 
-    # compound = db.relationship("FlavorCompound",
-    #                         backref=db.backref("flavor_compounds_ingredients"))
+    compound = db.relationship("FlavorCompound",
+                            backref=db.backref("flavor_compounds_ingredients"))
 
 
 
