@@ -3,10 +3,9 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, request
 from flask_debugtoolbar import DebugToolbarExtension
 
-from sqlalchemy import func, desc
-
 from model import connect_to_db, db, Ingredient, FlavorCompound, FlavorCompoundIngredient, IngredientSimilarity
 
+from sqlalchemy import func, desc
 
 app = Flask(__name__)
 app.secret_key = "ABC"
@@ -23,24 +22,86 @@ def index():
 def ingredient_pairs():
     """Show list of ingredients that pair with ingr_zero."""
     
-    # ingr_zero_input = request.args.get("ingr_zero")
+    ingr_zero = str(request.args.get("ingr_zero_input")).rstrip()
+    # print "ingr_zero is: '" + ingr_zero + "'"
 
-    print 20 * "$"
-    # print ingr_zero_input
-    
-    ingr_zero_input = "black_tea" 
+    # ingr_zero = "black_tea"
+    # print "ingr_zero is: " + ingr_zero 
 
-    ingr_zero_id = Ingredient.query.filter(Ingredient.name==ingr_zero_input).all()[0].id
+    print 20 * "!"
+    # print type(ingr_zero)
 
-    ingr_zero_name = Ingredient.query.filter(Ingredient.name==ingr_zero_input).all()[0].name
- 
+    ingr_zero_id = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].id
 
-    print "ingr_zero_id is: " + str(ingr_zero_id)
+    # print ingr_zero_id
+
+    ingr_zero_name = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].name
+    # print ingr_zero_name
+
+    # print "ingr_zero_id is: " + str(ingr_zero_id)
 
     ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
                                         .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
 
-    print "ingr_one_list is: " + str(ingr_one_list)
+    
+    # print "ingr_one_list is: " + str(ingr_one_list)
+    # print len(ingr_one_list)
+    
+    # first_ingr_id = ingr_one_list[0].ingr_one
+    # print "first elem is: " + str(first_ingr_id)
+
+    # first_name = Ingredient.query.filter(Ingredient.id==first_ingr_id).all()[0].name
+    # print "first name is: " + first_name
+
+    ingr_one_names = []
+
+    for ingr_similarity in ingr_one_list:
+        print type(ingr_similarity)
+
+        ingr_one_id = ingr_similarity.ingr_one
+        print "elem is: " + str(ingr_one_id)
+
+        ingr_one_fcs = ingr_similarity.shared_fcs
+        print "shared compounds is:" + str(ingr_one_fcs)
+
+        ingr_one_name = Ingredient.query.filter(Ingredient.id==ingr_one_id).all()[0].name
+        print "ingredient name is:" + str(ingr_one_name)
+
+        ingr_fcs = ()
+
+
+    
+    return render_template("ingredient_pairs.html", ingr_zero_name=ingr_zero_name,
+                                                    ingr_one_fcs=ingr_one_fcs,
+                                                    ingr_one_list=ingr_one_list,
+                                                    ingr_one_name=ingr_one_name)
+
+@app.route("/cuisine_ingredient_pairs")
+def cuisine_ingredient_pairs():
+    """Show list of ingredients that pair with ingr_zero, in a cuisine."""
+    
+    ingr_zero = str(request.args.get("ingr_zero_input"))
+    # print ingr_zero
+
+    # ingr_zero_hc = "black_tea"
+    # print ingr_zero_hc 
+
+    # print 20 * "!"
+    # print type(ingr_zero)
+
+    ingr_zero_id = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].id
+
+    # print ingr_zero_id
+
+    ingr_zero_name = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].name
+    # print ingr_zero_name
+
+    # print "ingr_zero_id is: " + str(ingr_zero_id)
+
+    ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
+                                        .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
+
+    # print "ingr_one_list is: " + str(ingr_one_list)
     # print len(ingr_one_list)
     
     
@@ -49,7 +110,8 @@ def ingredient_pairs():
     #     ingr_one_name = Ingredient.query.filter(Ingredient.name==IngredientSimilarity.ingr_z)
 
     
-    return render_template("ingredient_pairs.html", ingr_zero_name=ingr_zero_name, ingr_one_list=ingr_one_list)
+    return render_template("ingredient_pairs.html", ingr_zero_name=ingr_zero_name,
+                                                    ingr_one_list=ingr_one_list)
 
 @app.route("/ingredients")
 def ingredient_list():
