@@ -1,15 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
 
-  <h1>Similar Ingredients</h1>
+<h1>Similar Ingredients</h1>
   
 	{{ ingr_zero_name }}  
 
-	<br><br>
+<br><br>
   
-  {% for ingr_similarity in ingr_one_list %}
+<!-- 	{% for ingr_similarity in ingr_one_list %}
 
-	<ul>{{ ingr_one_name }} Shared Compounds: {{ingr_similarity.shared_fcs}} </ul>
+
+<ul>{{ ingr_one_name }} Shared Compounds: {{ingr_similarity.shared_fcs}} </ul>
+
+	{% endfor %}
+ -->
+	{% for ingr_one_name in ingr_one_names %}
+	
+		<li>{{ ingr_one_name[0] }} shares: {{ ingr_one_name[1]}} compounds </li>
 
 	{% endfor %}
 
