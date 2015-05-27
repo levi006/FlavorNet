@@ -208,7 +208,7 @@ class IngredientSimilarity(db.Model):
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<IngredientSimilarity id=%s ingr_0=%s ingr_1=%s shared_fcs=%s>" % (
+        return "<IngredientSimilarity id=%s ingr_zero=%s ingr_one=%s shared_fcs=%s>" % (
         self.id, self.ingr_zero, self.ingr_one, self.shared_fcs)
 
 class IngredientSimCuisine(db.Model):
@@ -222,21 +222,20 @@ class IngredientSimCuisine(db.Model):
     cuisine = db.Column(db.Integer, db.ForeignKey('cuisines.id'))
     count = db.Column(db.Integer, nullable=False, default=1)
     
-    # ingr_zero = db.relationship("Ingredient",
-    #                        backref=db.backref("ingr_similarities_in_cuisines"))
+    ingr_zero_id = db.relationship("Ingredient",
+                           foreign_keys='IngredientSimCuisine.ingr_zero')
 
+    ingr_one_id = db.relationship("Ingredient",
+                            foreign_keys='IngredientSimCuisine.ingr_one')
 
-    # ingr_one = db.relationship("Ingredient",
-    #                         backref=db.backref("ingr_similarities_in_cuisines"))
-
-    # cuisine = db.relationship("Cuisine",
-    #                         backref=db.backref("ingr_similarities_in_cuisines"))
+    cuisine_id = db.relationship("Cuisine",
+                            backref=db.backref("ingr_sims_in_cuisines"))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return "<IngredientSimiliarity id=%s ingr_0=%s ingr_1=%s shared_fcs=%s>" % (
-        self.id, self.ingr_0, self.ingr_1, self.shared_fcs)
+        return "<IngredientSimCuisine id=%s ingr_zero=%s ingr_one=%s cuisine=%s count=%s>" % (
+        self.id, self.ingr_zero, self.ingr_one, self.cuisine, self.count)
   
     def tearDown(self):
         table = Table('ingr_sims_in_cuisines', Base.metadata, autoload=True)

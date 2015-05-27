@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, request
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, Ingredient, FlavorCompound, FlavorCompoundIngredient, IngredientSimilarity
+from model import connect_to_db, db, Cuisine, Ingredient, FlavorCompound, FlavorCompoundIngredient, IngredientSimilarity, IngredientSimCuisine
 
 from sqlalchemy import func, desc
 
@@ -80,42 +80,53 @@ def ingredient_pairs():
                                                     ingr_one_list=ingr_one_list,
                                                     ingr_one_names=ingr_one_names)
 
-# @app.route("/cuisine_ingredient_pairs")
-# def cuisine_ingredient_pairs():
-#     """Show list of ingredients that pair with ingr_zero, in a cuisine."""
+@app.route("/ingredient_pairs/cuisines")
+def cuisine_ingredient_pairs():
+    """Show list of ingredients that pair with ingr_zero, in a cuisine."""
     
-#     ingr_zero = str(request.args.get("ingr_zero_input"))
-#     # print ingr_zero
+    ingr_zero = request.args.get("ingr_zero_input").rstrip()
+    cuisine = request.args.get("cuisine_input").rstrip()
+    print cuisine
+    # print type(cuisine)
+    # print ingr_zero
+    # print type(ingr_zero)
 
-#     # ingr_zero_hc = "black_tea"
-#     # print ingr_zero_hc 
-
-#     # print 20 * "!"
-#     # print type(ingr_zero)
-
-#     ingr_zero_id = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].id
-
-#     # print ingr_zero_id
-
-#     ingr_zero_name = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].name
-#     # print ingr_zero_name
-
-#     # print "ingr_zero_id is: " + str(ingr_zero_id)
-
-#     ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id, ).join(RecipeIngredient)
-#                                         .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
-
-#     # print "ingr_one_list is: " + str(ingr_one_list)
-#     # print len(ingr_one_list)
+    ingr_zero_id = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].id
+    cuisine_id = Cuisine.query.filter(Cuisine.name==cuisine).all()[0].id
     
-    
-#     # for ingr_one_name in ingr_one_name_list:
+    print 20 * "$"
+    print "Cuisine id for" + " " + str(cuisine) + " is " + str(cuisine_id)
+    # print ingr_zero_id
 
-#     #     ingr_one_name = Ingredient.query.filter(Ingredient.name==IngredientSimilarity.ingr_z)
-
+    # ingr_zero_name = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].name
     
-    return render_template("ingredient_pairs.html", ingr_zero_name=ingr_zero_name,
-                                                    ingr_one_list=ingr_one_list)
+    print "ingr_zero_id is: " + str(ingr_zero_id)
+    print "ingr_zero name is: " + str(ingr_zero)
+
+    ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
+                                        .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
+    # print ingr_one_list
+
+    ingr_sim_cuisine_results = []
+
+    for ingr_sim in ingr_one_list:
+
+        ingr_one_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_zero_id,\
+                                                     IngredientSimCuisine.ingr_one==ingr_sim.ingr_one,\
+                                                     IngredientSimCuisine.cuisine==cuisine_id).all()
+        if ingr_one_sim_pairs == []:
+            continue
+        else:
+            ingr_sim_cuisine_results.extend(ingr_one_sim_pairs)
+
+    print ingr_sim_cuisine_results
+
+    # print "ingr_one_list is: " + str(ingr_one_list)
+    # print len(ingr_one_list)
+    
+    return render_template("ingredient_pairs_cuisines.html", ingr_sim_cuisine_results=ingr_sim_cuisine_results,
+                                                             ingr_zero_name=ingr_zero,
+                                                             ingr_one_list=ingr_one_list)
 
 @app.route("/ingredients")
 def ingredient_list():

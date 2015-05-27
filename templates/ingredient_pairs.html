@@ -3,17 +3,10 @@
 
 <h1>Similar Ingredients</h1>
   
-	{{ ingr_zero_name }}  
+	{{ ingr_zero_name.upper() }}  
 
 <br><br>
   
-<!-- 	{% for ingr_similarity in ingr_one_list %}
-
-
-<ul>{{ ingr_one_name }} Shared Compounds: {{ingr_similarity.shared_fcs}} </ul>
-
-	{% endfor %}
- -->
 	{% for ingr_one_name in ingr_one_names %}
 	
 		<li>{{ ingr_one_name[0] }} shares: {{ ingr_one_name[1]}} compounds </li>
