@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Similar Ingredients, within Cuisines</h1>
+  
+	{{ ingr_zero_name.upper() }} : {{ cuisine.upper() }}  
+
+<br><br>
+
+	{% for ingr_sim in ingr_sim_cuisine_results %}
+	
+		<li>{{ ingr_sim.ingr_one_id.name }} shares: {{ ingr_sim.count }} occurrences </li>
+
+	{% endfor %}
+
+{% endblock %}

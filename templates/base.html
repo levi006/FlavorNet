@@ -1,17 +1,18 @@
-<!doctype html>
+<!-- <!DOCTYPE html> -->
 <html>
-<head>
-    <title>Flavornet</title>
-</head>
+	<head>
+    	<title>Flavornet</title>
+    	<script src="https://code.jquery.com/jquery.js"></script>
+    	<script src="static/js/typeahead.js"></script>
+    	<script src="static/js/ingrs_fcis_typeahead.js"></script>
+	</head>
 <body>
-
-{% for flash in get_flashed_messages() %}
-  {{ flash }}
-{% endfor %}
 
 {% block content %}
     Put your body here.
 {% endblock %}
+
+
 
 </body>
 </html>

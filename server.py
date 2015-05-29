@@ -1,6 +1,6 @@
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify 
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, Cuisine, Ingredient, FlavorCompound, FlavorCompoundIngredient, IngredientSimilarity, IngredientSimCuisine
@@ -17,6 +17,18 @@ def index():
     
     return render_template("homepage.html")
 
+@app.route('/homepage')
+def ingredient_input():
+    """This will populate the list of available ingredients in ingredient query form for Typeahead functionality."""
+    
+    ingredients = Ingredient.query.all()
+    print ingredients
+
+    ingredients = requests.get('/')
+    ingredient_input = ingredients.json()
+    return jsonify(ingredient_input)
+
+     
 
 @app.route("/ingredient_pairs")
 def ingredient_pairs():
@@ -103,30 +115,34 @@ def cuisine_ingredient_pairs():
     print "ingr_zero_id is: " + str(ingr_zero_id)
     print "ingr_zero name is: " + str(ingr_zero)
 
-    ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
-                                        .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
-    # print ingr_one_list
+    # ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
+    #                                     .limit(100).all()
+    
+    # print "ingr_one_list is of length: " + str(len(ingr_one_list))
 
     ingr_sim_cuisine_results = []
 
-    for ingr_sim in ingr_one_list:
+    # for ingr_sim in ingr_one_list:
 
-        ingr_one_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_zero_id,\
-                                                     IngredientSimCuisine.ingr_one==ingr_sim.ingr_one,\
-                                                     IngredientSimCuisine.cuisine==cuisine_id).all()
-        if ingr_one_sim_pairs == []:
-            continue
-        else:
-            ingr_sim_cuisine_results.extend(ingr_one_sim_pairs)
+    ingr_one_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_zero_id,\
+                                                     IngredientSimCuisine.cuisine==cuisine_id)\
+                                                     .order_by(desc(IngredientSimCuisine.count)).limit(25).all()
+    
+    # ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
+    #                                     .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
+    # print ingr_one_sim_pairs
 
-    print ingr_sim_cuisine_results
+    if ingr_one_sim_pairs != []:
+        ingr_sim_cuisine_results.extend(ingr_one_sim_pairs)
+
+    # print ingr_sim_cuisine_results
 
     # print "ingr_one_list is: " + str(ingr_one_list)
     # print len(ingr_one_list)
     
     return render_template("ingredient_pairs_cuisines.html", ingr_sim_cuisine_results=ingr_sim_cuisine_results,
                                                              ingr_zero_name=ingr_zero,
-                                                             ingr_one_list=ingr_one_list)
+                                                             cuisine=cuisine)
 
 @app.route("/ingredients")
 def ingredient_list():

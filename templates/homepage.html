@@ -1,41 +1,112 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Flavornet</h1>
+<h3>Flavornet</h3>
 
-	<form action="/ingredient_pairs">
-	        <label>Please enter a starting ingredient:
-	        <input type="text" name="ingr_zero_input" placeholder="i.e. lemon">
-	        </label>
-	<br>
-	    <input type="submit"> 
-	</form>
+
+<div id="the-basics">
+  <input class="typeahead" type="text" placeholder="States of USA">
+</div>
+
 
 <div>
 
-<br><br>
+<script>
+var substringMatcher = function(strs) {
+  console.log("We're inside substringMatcher!!")
+  return function findMatches(q, cb) {
+    console.log("We're inside findMatches!!")
+    var matches, substringRegex;
+ 
+    // an array that will be populated with substring matches
+    matches = [];
+ 
+    // regex used to determine if a string contains the substring `q`
+    substrRegex = new RegExp(q, 'i');
+ 
+    // iterate through the pool of strings and for any string that
+    // contains the substring `q`, add it to the `matches` array
+    $.each(strs, function(i, str) {
+      if (substrRegex.test(str)) {
+        matches.push(str);
+      }
+    });
+ 
+    cb(matches);
+  };
+};
+
+
+
+
+
+$(document).ready(function(){
+	var ingredient_inputs = ["lemon", "lime", "leopard"];
+
+	//do a AJAX request to return all collections for each typeahead field. 
+//	going to a flask route, the route must return a json object, instead of render template. 
+//	will do so by passing in python diction into jsonify()
+//	have to import jsonify from flask 
+
+//	cant declare variables within the callback, have to call another function that calls back the values and pass to another function. Group jquery calls into a function than you can call. #Align typeahead handlers
+
+
+	$('#the-basics .typeahead').typeahead({
+		hint:true,
+		highlight:true,
+		minLength:1
+	},
+	{
+		name:'ingredients',
+		source: substringMatcher(ingredient_inputs) 
+	});
+});
+
+</script>
+
+<p> To query ingredient pairs:
+
+	
+	    <div id="ingredients">
+  		<input class="typeahead" type="text" placeholder="i.e. lemon">
+		</div>
+	<br>
+	    <input type="submit"> 
+	
+</div>
+
+<br>
+
+<div>
+<p>To query ingredients within a cuisine:
+<br>
 	<form action="/ingredient_pairs/cuisines">
-	        <label>Please enter a starting ingredient:
+	        <label>Enter a starting ingredient:
 	        <input type="text" name="ingr_zero_input" placeholder="i.e. lemon">
 	        </label>
 	<br><br>
-	        <label>Please enter a cuisine:
+	        <label>Enter a cuisine:
 	        <input type="text" name="cuisine_input" placeholder="i.e. Italian">
 	        </label>
 	<br>
 	    <input type="submit"> 
 	</form>
+</div>
 
-<br><br>
+<br>
 
 <div>
 
-<h2>Ingredients</h2>
+<h3>Ingredients</h3>
 	<p><a href="/ingredients">View all ingredients</a>
 	</p>
 
-<h2>Flavor Compounds</h2>
+<h3>Flavor Compounds</h3>
 	<p><a href="/flavorcompounds">View all flavor compounds</a>
 	</p>
 
+</div>
 {% endblock %}
+
+
+
