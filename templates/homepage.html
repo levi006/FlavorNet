@@ -5,11 +5,10 @@
 
 
 <div id="the-basics">
-  <input class="typeahead" type="text" placeholder="States of USA">
+  <input class="typeahead" type="text" placeholder="lemon-lime test">
 </div>
 
 
-<div>
 
 <script>
 var substringMatcher = function(strs) {
@@ -37,19 +36,8 @@ var substringMatcher = function(strs) {
 };
 
 
-
-
-
 $(document).ready(function(){
-	var ingredient_inputs = ["lemon", "lime", "leopard"];
-
-	//do a AJAX request to return all collections for each typeahead field. 
-//	going to a flask route, the route must return a json object, instead of render template. 
-//	will do so by passing in python diction into jsonify()
-//	have to import jsonify from flask 
-
-//	cant declare variables within the callback, have to call another function that calls back the values and pass to another function. Group jquery calls into a function than you can call. #Align typeahead handlers
-
+	var test_inputs = ["lemon", "lime", "leopard"];
 
 	$('#the-basics .typeahead').typeahead({
 		hint:true,
@@ -57,23 +45,61 @@ $(document).ready(function(){
 		minLength:1
 	},
 	{
-		name:'ingredients',
-		source: substringMatcher(ingredient_inputs) 
+		name:'test_inputs',
+		source: substringMatcher(test_inputs) 
 	});
-});
 
+
+
+
+	$.get('/ingredients.json');
+
+	console.log(ingredient_inputs); 
+	
+
+	$('#ingredients_typeahead .typeahead').typeahead({
+		hint:true,
+		highlight:true,
+		minLength:1
+	},
+	{
+		name:'ingredient_inputs',
+		source: substringMatcher(ingredient_inputs) 
+
+	});
+
+
+	$.get('/cuisines.json');
+
+	console.log(ingredient_inputs); 
+	
+
+	$('#cuisines_typeahead .typeahead').typeahead({
+		hint:true,
+		highlight:true,
+		minLength:1
+	},
+	{
+		name:'cuisine_inputs',
+		source: substringMatcher(cuisine_inputs) 
+
+	});
 </script>
 
 <p> To query ingredient pairs:
 
-	
-	    <div id="ingredients">
+<!-- affecting the first query, possible because of form action overlapping with div id  -->   
+	<form action="/ingredient_pairs">
+
+	    <div id="ingredients_typeahead">
   		<input class="typeahead" type="text" placeholder="i.e. lemon">
 		</div>
+	
 	<br>
 	    <input type="submit"> 
-	
-</div>
+	</form>
+
+
 
 <br>
 

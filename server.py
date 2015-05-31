@@ -17,18 +17,40 @@ def index():
     
     return render_template("homepage.html")
 
-@app.route('/homepage')
+@app.route('/ingredients.json')
 def ingredient_input():
     """This will populate the list of available ingredients in ingredient query form for Typeahead functionality."""
     
-    ingredients = Ingredient.query.all()
-    print ingredients
+    print 20 * ('*')
+    
+    
+    ingredient_dict = {}
 
-    ingredients = requests.get('/')
-    ingredient_input = ingredients.json()
-    return jsonify(ingredient_input)
+    for ingredient_inputs in Ingredient.query.all():
 
-     
+        ingredient_dict[ingredient_inputs.name] = ingredient_inputs.id
+        
+        # ingredients_list.append(ingredient_inputs.name)
+
+    # print ingredients_list
+    
+    # print 20 * ('*')
+
+    # ingredient_inputs = ingredients.json()
+
+    return jsonify(ingredient_dict)
+
+@app.route('/cuisines.json')
+def cuisine_input():
+    """This will populate the list of available cuisines in ingredient-cuisine query form for Typeahead functionality."""
+    
+    cuisine_dict = {}
+
+    for cuisine_inputs in Cuisine.query.all():
+
+        cuisine_dict[cuisine_inputs.name] = cuisine_inputs.id
+
+    return jsonify(cuisine_dict)
 
 @app.route("/ingredient_pairs")
 def ingredient_pairs():
