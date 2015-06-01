@@ -49,15 +49,16 @@ def cuisine_input():
     for cuisine_inputs in Cuisine.query.all():
 
         cuisine_dict[cuisine_inputs.name] = cuisine_inputs.id
-
+        
     return jsonify(cuisine_dict)
+
 
 @app.route("/ingredient_pairs")
 def ingredient_pairs():
     """Show list of ingredients that pair with ingr_zero."""
     
     ingr_zero = str(request.args.get("ingr_zero_input")).rstrip()
-    # print "ingr_zero is: '" + ingr_zero + "'"
+    print "ingr_zero is: '" + ingr_zero + "'"
 
     # ingr_zero = "black_tea"
     # print "ingr_zero is: " + ingr_zero 
