@@ -20,24 +20,13 @@ def index():
 @app.route('/ingredients.json')
 def ingredient_input():
     """This will populate the list of available ingredients in ingredient query form for Typeahead functionality."""
-    
-    print 20 * ('*')
-    
-    
+
     ingredient_dict = {}
 
     for ingredient_inputs in Ingredient.query.all():
 
         ingredient_dict[ingredient_inputs.name] = ingredient_inputs.id
         
-        # ingredients_list.append(ingredient_inputs.name)
-
-    # print ingredients_list
-    
-    # print 20 * ('*')
-
-    # ingredient_inputs = ingredients.json()
-
     return jsonify(ingredient_dict)
 
 @app.route('/cuisines.json')
@@ -49,9 +38,8 @@ def cuisine_input():
     for cuisine_inputs in Cuisine.query.all():
 
         cuisine_dict[cuisine_inputs.name] = cuisine_inputs.id
-        
-    return jsonify(cuisine_dict)
 
+    return jsonify(cuisine_dict)
 
 @app.route("/ingredient_pairs")
 def ingredient_pairs():
@@ -121,22 +109,18 @@ def cuisine_ingredient_pairs():
     
     ingr_zero = request.args.get("ingr_zero_input").rstrip()
     cuisine = request.args.get("cuisine_input").rstrip()
-    print cuisine
-    # print type(cuisine)
-    # print ingr_zero
-    # print type(ingr_zero)
 
     ingr_zero_id = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].id
     cuisine_id = Cuisine.query.filter(Cuisine.name==cuisine).all()[0].id
     
-    print 20 * "$"
-    print "Cuisine id for" + " " + str(cuisine) + " is " + str(cuisine_id)
-    # print ingr_zero_id
+    # print 20 * "$"
+    # print "Cuisine id for" + " " + str(cuisine) + " is " + str(cuisine_id)
+    # # print ingr_zero_id
 
-    # ingr_zero_name = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].name
+    # # ingr_zero_name = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].name
     
-    print "ingr_zero_id is: " + str(ingr_zero_id)
-    print "ingr_zero name is: " + str(ingr_zero)
+    # print "ingr_zero_id is: " + str(ingr_zero_id)
+    # print "ingr_zero name is: " + str(ingr_zero)
 
     # ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
     #                                     .limit(100).all()
