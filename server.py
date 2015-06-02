@@ -103,6 +103,93 @@ def ingredient_pairs():
                                                     ingr_one_list=ingr_one_list,
                                                     ingr_one_names=ingr_one_names)
 
+@app.route("/ingredient_pairs.json")
+def ingredient_pairs_json():
+    """Show list of ingredients that pair with ingr_zero."""
+    
+    # data = {}
+
+    # # ingr_zero = str(request.args.get("ingr_zero_input")).rstrip()
+
+    # ingr_zero = "chicken"
+
+    # ingr_zero_id = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].id
+
+    # ingr_zero= Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0]
+
+    
+    # parent = ingr_zero.json()
+
+    # data["data"] = parent
+    # #indexing the dictionary 
+
+    # data["data"]["children"] = []
+
+    # ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
+    #                                     .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
+
+    # for  ingr_one in ingr_one_list:
+
+    #     child = Ingredient.query.get(ingr_one.ingr_one).json()
+
+    #     data["data"]["children"].append(child)
+
+    data = {
+        "name": "chicken",
+        "children": [
+        {
+        "id": 1475, 
+        "name": "roasted_chicken"
+        }, 
+        {
+        "id": 1390, 
+        "name": "cured_pork"
+        }, 
+        {
+        "id": 1401, 
+        "name": "parmesan_cheese"
+        }, 
+        {
+        "id": 1495, 
+        "name": "beer"
+        }, 
+        {
+        "id": 1527, 
+        "name": "green_tea"
+        }, 
+        {
+        "id": 1514, 
+        "name": "pouching_tea"
+        }, 
+        {
+        "id": 1422, 
+        "name": "feta_cheese"
+        }, 
+        {
+        "id": 1529, 
+        "name": "munster_cheese"
+        }, 
+        {
+        "id": 1380, 
+        "name": "roasted_cocoa"
+        }, 
+        {
+        "id": 1516, 
+        "name": "boiled_mutton"
+        }
+        ], 
+        }
+
+# print data
+
+    return jsonify(data)
+
+@app.route("/reingold_tilford")
+def ingredient_pairs_d3():
+    """Show list of ingredients that pair with ingr_zero."""
+
+    return render_template("reingold_tilford.html")
+
 @app.route("/ingredient_pairs/cuisines")
 def cuisine_ingredient_pairs():
     """Show list of ingredients that pair with ingr_zero, in a cuisine."""

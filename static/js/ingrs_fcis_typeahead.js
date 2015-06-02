@@ -47,8 +47,6 @@ $('#ingredient_pairs_typeahead .typeahead').typeahead({
 
   });
 
-
-
 $.getJSON( "/cuisines.json", function( data ) {
 
 $.each( data, function( key, val ) {

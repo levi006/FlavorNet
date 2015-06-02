@@ -64,6 +64,16 @@ class Ingredient(db.Model):
         table.create(db.engine)
         print "Teardown complete for ingredients"    
 
+    def json(self):
+
+        json_ingr_sims = {}
+
+        json_ingr_sims["id"] = self.id 
+
+        json_ingr_sims["name"] = self.name 
+
+        return json_ingr_sims
+
 class FlavorCompound(db.Model):
     """Flavour compounds make up the flavor profile of an individual ingredient and 
     contribute towards a recipe's flavor profile."""
