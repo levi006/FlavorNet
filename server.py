@@ -66,15 +66,6 @@ def ingredient_pairs():
     ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
                                         .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
 
-    
-    # print "ingr_one_list is: " + str(ingr_one_list)
-    # print len(ingr_one_list)
-    
-    # first_ingr_id = ingr_one_list[0].ingr_one
-    # print "first elem is: " + str(first_ingr_id)
-
-    # first_name = Ingredient.query.filter(Ingredient.id==first_ingr_id).all()[0].name
-    # print "first name is: " + first_name
 
     ingr_one_names = []
 
@@ -94,9 +85,6 @@ def ingredient_pairs():
 
         ingr_one_names.append(ingr_fcs)
 
-    print ingr_one_names
-
-
     
     return render_template("ingredient_pairs.html", ingr_zero_name=ingr_zero_name,
                                                     ingr_one_fcs=ingr_one_fcs,
@@ -107,82 +95,72 @@ def ingredient_pairs():
 def ingredient_pairs_json():
     """Show list of ingredients that pair with ingr_zero."""
     
-    # data = {}
+    data = {}
 
-    # # ingr_zero = str(request.args.get("ingr_zero_input")).rstrip()
+    # ingr_zero = str(request.args.get("ingr_zero_input")).rstrip()
 
-    # ingr_zero = "chicken"
+    ingr_zero = "tomato"
 
-    # ingr_zero_id = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].id
-
-    # ingr_zero= Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0]
+    ingr_zero= Ingredient.query.filter(Ingredient.name==ingr_zero).first()
+    ingr_zero_id = ingr_zero.id
 
     
-    # parent = ingr_zero.json()
+    parent_name = ingr_zero.name
 
-    # data["data"] = parent
-    # #indexing the dictionary 
+    data["name"] = parent_name
+    #indexing the dictionary 
 
-    # data["data"]["children"] = []
+    data["children"] = []
 
-    # ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
-    #                                     .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
+    ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
+                                        .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
 
-    # for  ingr_one in ingr_one_list:
+    for  ingr_one in ingr_one_list:
 
-    #     child = Ingredient.query.get(ingr_one.ingr_one).json()
+        child = Ingredient.query.get(ingr_one.ingr_one).json()
 
-    #     data["data"]["children"].append(child)
-
-    data = {
-        "name": "chicken",
-        "children": [
-        {
-        "id": 1475, 
-        "name": "roasted_chicken"
-        }, 
-        {
-        "id": 1390, 
-        "name": "cured_pork"
-        }, 
-        {
-        "id": 1401, 
-        "name": "parmesan_cheese"
-        }, 
-        {
-        "id": 1495, 
-        "name": "beer"
-        }, 
-        {
-        "id": 1527, 
-        "name": "green_tea"
-        }, 
-        {
-        "id": 1514, 
-        "name": "pouching_tea"
-        }, 
-        {
-        "id": 1422, 
-        "name": "feta_cheese"
-        }, 
-        {
-        "id": 1529, 
-        "name": "munster_cheese"
-        }, 
-        {
-        "id": 1380, 
-        "name": "roasted_cocoa"
-        }, 
-        {
-        "id": 1516, 
-        "name": "boiled_mutton"
-        }
-        ], 
-        }
-
-# print data
+        data["children"].append(child)
 
     return jsonify(data)
+
+
+@app.route("/ingredient_pairs_cuisine.json")
+def ingredient_pairs_cuisine_json():
+    """Show list of ingredients that pair with ingr_zero in a cuisine."""
+
+    data = {}
+
+    # ingr_zero = request.args.get("ingr_zero_input").rstrip()
+    # cuisine = request.args.get("cuisine_input").rstrip()
+
+    ingr_zero = "banana"
+    cuisine = "Italian"
+
+    ingr_zero = Ingredient.query.filter(Ingredient.name==ingr_zero).first()
+    ingr_zero_id = ingr_zero.id
+
+    cuisine = Cuisine.query.filter(Cuisine.name==cuisine).first()
+    cuisine_id = cuisine.id
+
+    parent_name = ingr_zero.name
+    cuisine_name = cuisine.name
+
+    data["ingr_zero_name"] = parent_name
+
+    data["cuisine"] = cuisine_name
+
+    data["ingr_one"] = []
+
+    ingr_one_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_zero_id,\
+                                                     IngredientSimCuisine.cuisine==cuisine_id)\
+                                                     .order_by(desc(IngredientSimCuisine.count)).limit(25).all()
+    for ingr_one in ingr_one_sim_pairs:
+        
+        ingr_one = Ingredient.query.get(ingr_one.ingr_one).json()
+
+        data["ingr_one"].append(ingr_one)
+
+    return jsonify(data) 
 
 @app.route("/reingold_tilford")
 def ingredient_pairs_d3():
@@ -199,20 +177,7 @@ def cuisine_ingredient_pairs():
 
     ingr_zero_id = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].id
     cuisine_id = Cuisine.query.filter(Cuisine.name==cuisine).all()[0].id
-    
-    # print 20 * "$"
-    # print "Cuisine id for" + " " + str(cuisine) + " is " + str(cuisine_id)
-    # # print ingr_zero_id
 
-    # # ingr_zero_name = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].name
-    
-    # print "ingr_zero_id is: " + str(ingr_zero_id)
-    # print "ingr_zero name is: " + str(ingr_zero)
-
-    # ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
-    #                                     .limit(100).all()
-    
-    # print "ingr_one_list is of length: " + str(len(ingr_one_list))
 
     ingr_sim_cuisine_results = []
 

@@ -26,9 +26,8 @@
 var width = 900,
     height = 500;
 
-console.log(width);
-console.log("HEY WE'RE HERE!!!");
-
+// console.log(width);
+// console.log("HEY WE'RE HERE!!!");
 
 var tree = d3.layout.tree()
     .size([height, width - 160]);
@@ -42,14 +41,14 @@ var svg = d3.select("body").append("svg")
   .append("g")
     .attr("transform", "translate(40,0)");
 
-console.log(svg);
+// console.log(svg);
 
 d3.json("/ingredient_pairs.json", function(error, json) {
   var nodes = tree.nodes(json),
       links = tree.links(nodes);
 
-console.log(nodes)
-console.log(links)
+// console.log(nodes)
+// console.log(links)
 
   var link = svg.selectAll("path.link")
       .data(links)
@@ -63,7 +62,7 @@ console.log(links)
       .attr("class", "node")
       .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
 
-console.log(node)
+// console.log(node)
 
   node.append("circle")
       .attr("r", 4.5);
@@ -73,8 +72,8 @@ console.log(node)
       .attr("dy", 3)
       .attr("text-anchor", function(d) { return d.children ? "end" : "start"; })
       .text(function(d) { return d.name; });
-console.log(node)
-consolde.log(d.children)
+// console.log(node)
+// consolde.log(d.children)
 });
 
 
