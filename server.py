@@ -6,6 +6,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from model import connect_to_db, db, Cuisine, Ingredient, FlavorCompound, FlavorCompoundIngredient, IngredientSimilarity, IngredientSimCuisine
 
 from sqlalchemy import func, desc
+import json
 
 app = Flask(__name__)
 app.secret_key = "ABC"
@@ -14,10 +15,9 @@ app.secret_key = "ABC"
 @app.route('/')
 def index():
     """Homepage."""
-
-
     
     return render_template("homepage.html")
+
 
 @app.route('/ingredients.json')
 def ingredient_input():
@@ -31,6 +31,7 @@ def ingredient_input():
         
     return jsonify(ingredient_dict)
 
+
 @app.route('/cuisines.json')
 def cuisine_input():
     """This will populate the list of available cuisines in ingredient-cuisine query form for Typeahead functionality."""
@@ -43,39 +44,25 @@ def cuisine_input():
 
     return jsonify(cuisine_dict)
 
+
 @app.route("/ingredient_pairs")
 def ingredient_pairs():
     """Show list of ingredients that pair with ingr_zero."""
     
     ingr_zero = str(request.args.get("ingr_zero_input")).rstrip()
-    print "ingr_zero is: '" + ingr_zero + "'"
-
-    # ingr_zero = "black_tea"
-    # print "ingr_zero is: " + ingr_zero 
-
-    print 20 * "!"
-    # print type(ingr_zero)
 
     ingr_zero_id = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].id
 
-    # print ingr_zero_id
-
     ingr_zero_name = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].name
-    # print ingr_zero_name
-
-    # print "ingr_zero_id is: " + str(ingr_zero_id)
 
     ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
                                         .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
 
-
     ingr_one_names = []
 
     for ingr_similarity in ingr_one_list:
-        # print type(ingr_similarity)
 
         ingr_one_id = ingr_similarity.ingr_one
-        # print "elem is: " + str(ingr_one_id)
 
         ingr_one_fcs = ingr_similarity.shared_fcs
         print "shared compounds is:" + str(ingr_one_fcs)
@@ -86,21 +73,18 @@ def ingredient_pairs():
         ingr_fcs = (ingr_one_name, ingr_one_fcs)
 
         ingr_one_names.append(ingr_fcs)
-
     
     return render_template("ingredient_pairs.html", ingr_zero_name=ingr_zero_name,
                                                     ingr_one_fcs=ingr_one_fcs,
                                                     ingr_one_list=ingr_one_list,
                                                     ingr_one_names=ingr_one_names)
 
+
 @app.route("/ingredient_pairs.json")
 def ingredient_pairs_json():
     """Show list of ingredients that pair with ingr_zero."""
     
     data = {}
-    print 20 * ("%")
-    # print ingr_zero
-    # print type(ingr_zero)
 
     ingr_zero = request.args.get("ingredient")
 
@@ -127,99 +111,6 @@ def ingredient_pairs_json():
     return jsonify(data)
 
 
-@app.route("/ingredient_pairs_cuisine.json")
-def ingredient_pairs_cuisine_json():
-    """Show list of ingredients that pair with ingr_zero in a cuisine."""
-
-    # data = {}
-
-    # # ingr_zero = request.args.get("ingr_zero_input").rstrip()
-    # # cuisine = request.args.get("cuisine_input").rstrip()
-
-    # ingr_zero = "banana"
-    # cuisine = "Italian"
-
-    # ingr_zero = Ingredient.query.filter(Ingredient.name==ingr_zero).first()
-    # ingr_zero_id = ingr_zero.id
-
-    # cuisine = Cuisine.query.filter(Cuisine.name==cuisine).first()
-    # cuisine_id = cuisine.id
-
-    # parent_name = ingr_zero.name
-    # cuisine_name = cuisine.name
-
-    # data["ingr_zero_name"] = parent_name
-
-    # data["cuisine"] = cuisine_name
-
-    # data["ingr_one"] = []
-
-    # ingr_one_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_zero_id,\
-    #                                                  IngredientSimCuisine.cuisine==cuisine_id)\
-    #                                                  .order_by(desc(IngredientSimCuisine.count)).limit(25).all()
-    # for ingr_one in ingr_one_sim_pairs:
-        
-    #     ingr_one = Ingredient.query.get(ingr_one.ingr_one).json()
-
-    #     data["ingr_one"].append(ingr_one)
-
-
-    data = {"ingr_one_name": "banana",
-          "cuisine": "Italian", 
-          "ingr_one": [
-            {
-              "id": 1257, 
-              "name": "orange"
-            }, 
-            {
-              "id": 1094, 
-              "name": "raspberry"
-            }, 
-            {
-              "id": 1399, 
-              "name": "vanilla"
-            }, 
-            {
-              "id": 1197, 
-              "name": "apple"
-            }, 
-            {
-              "id": 1179, 
-              "name": "wheat"
-            }, 
-            {
-              "id": 1160, 
-              "name": "peanut"
-            }, 
-            {
-              "id": 998, 
-              "name": "olive_oil"
-            }, 
-            {
-              "id": 1089, 
-              "name": "rum"
-            }
-          ], 
-
-        }
-
-    return jsonify(data) 
-
-# @app.route("/reingold_tilford")
-# def ingredient_pairs_d3():
-#     """Show tree diagram of ingredients that pair with ingr_zero."""
-
-#     ingredient_zero = request.args.get("ingr_zero_input")
-
-#     return render_template("reingold_tilford.html", ingr_zero=ingredient_zero)
-
-
-@app.route("/tree_cuisine")
-def ingredient_sim_cuisines_d3():
-    """Show tree diagram of ingredients that pair with ingr_zero in a cuisine."""
-
-    return render_template("tree_cuisine.html")
-
 
 @app.route("/ingredient_pairs/cuisines")
 def cuisine_ingredient_pairs():
@@ -227,6 +118,9 @@ def cuisine_ingredient_pairs():
     
     ingr_zero = request.args.get("ingr_zero_input").rstrip()
     cuisine = request.args.get("cuisine_input").rstrip()
+
+    # print cuisine
+    # print 50 * "%"
 
     ingr_zero_id = Ingredient.query.filter(Ingredient.name==ingr_zero).all()[0].id
     cuisine_id = Cuisine.query.filter(Cuisine.name==cuisine).all()[0].id
@@ -253,6 +147,170 @@ def cuisine_ingredient_pairs():
     return render_template("ingredient_pairs_cuisines.html", ingr_sim_cuisine_results=ingr_one_sim_pairs,
                                                              ingr_zero_name=ingr_zero,
                                                              cuisine=cuisine)
+
+
+@app.route("/ingredient_pairs_cuisine.json")
+def ingredient_pairs_cuisine_json():
+    """Show list of ingredients that pair with ingr_zero in a cuisine."""
+
+    data = {}
+    print "jsonified data is : " + str(json.dumps(data))
+
+    ingr_zero_name = request.args.get("ingredient")
+    print 50 * "!"
+    print ingr_zero_name
+    cuisine_name = request.args.get("cuisine")
+    print cuisine_name
+    print "Cuisine is " + str(cuisine_name)
+    print 50 * "@"
+
+    # ingr_zero_name = "banana"
+    # cuisine = "Italian"
+
+    ingr_zero = Ingredient.query.filter(Ingredient.name==ingr_zero_name).first()
+    ingr_zero_id = ingr_zero.id
+    print "ingr_zero_id is:" + str(ingr_zero.id)
+
+
+   
+
+    cuisine_obj = Cuisine.query.filter(Cuisine.name==cuisine_name).first()
+    print cuisine_obj
+    print "Cuisine_obj is " + str(cuisine_obj)
+    print 25* "HAY LOOK HERE"
+    print "Cuisine_obj.id is " +str(cuisine_obj.id)
+    cuisine_id = cuisine_obj.id
+    print "Cusine.name is " + str(cuisine_obj.name)
+    print 50 * "!"
+
+
+    parent_name = ingr_zero.name
+    cuisine_name = cuisine_obj.name
+
+    data["name"] = parent_name
+    print "jsonified data is : " + str(json.dumps(data))
+
+    # data["children"] = cuisine_name
+    # print "jsonified data is : " + str(json.dumps(data))
+
+    # data["cluster"] = []
+    # print "jsonified data is : " + str(json.dumps(data))
+
+    ingr_one_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_zero_id,\
+                                                     IngredientSimCuisine.cuisine==cuisine_id)\
+                                                     .order_by(desc(IngredientSimCuisine.count)).limit(25).all()
+    
+    data["name"] = parent_name
+
+    inner_list = {}
+    inner_list["name"] = cuisine_name
+    inner_list["children"] = []
+
+    for pair in ingr_one_sim_pairs:
+        
+        ingr_one = Ingredient.query.get(pair.ingr_one).json()
+        print "ingr_one is: " + str(ingr_one)
+        print "ingr_one count is: " + str(pair.count) 
+        ingr_one["size"] = pair.count
+
+        inner_list["children"].append(ingr_one)
+
+
+        #print "ingr_one.name is: " + str(ingr_one.name)
+
+
+        #pair = {"name": str(ingr_one.name), "size":1 }
+        #rint "inner pair is: " + str(pair)
+
+        #inner_list.append(ingr_one)
+
+        print "jsonified inner loop is : " + str(json.dumps(inner_list))
+
+
+
+    data["children"] = []
+    data["children"].append(inner_list)
+
+    # ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
+    #                                     .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
+
+    # for  ingr_one in ingr_one_list:
+
+    #     child = Ingredient.query.get(ingr_one.ingr_one).json()
+
+    #     data["children"].append(child)
+
+    # data = {"name": "lemon",
+    #         "children":[
+    #         {
+    #             "name":"Italian",
+    #             "children":[
+    #             { "name":"wheat", "size":1},
+    #             { "name":"chaff", "size":2}
+    #             ]
+    #         }]}
+
+    # data = {"ingr_one_name": "banana",
+    #       "cuisine": "Italian", 
+    #       "ingr_one": [
+    #         {
+    #           "id": 1257, 
+    #           "name": "orange"
+    #         }, 
+    #         {
+    #           "id": 1094, 
+    #           "name": "raspberry"
+    #         }, 
+    #         {
+    #           "id": 1399, 
+    #           "name": "vanilla"
+    #         }, 
+    #         {
+    #           "id": 1197, 
+    #           "name": "apple"
+    #         }, 
+    #         {
+    #           "id": 1179, 
+    #           "name": "wheat"
+    #         }, 
+    #         {
+    #           "id": 1160, 
+    #           "name": "peanut"
+    #         }, 
+    #         {
+    #           "id": 998, 
+    #           "name": "olive_oil"
+    #         }, 
+    #         {
+    #           "id": 1089, 
+    #           "name": "rum"
+    #         }
+    #       ], 
+
+    #     }
+
+
+    print "Jsonified result is" + str(json.dumps(data))
+
+    return jsonify(data) 
+
+# @app.route("/reingold_tilford")
+# def ingredient_pairs_d3():
+#     """Show tree diagram of ingredients that pair with ingr_zero."""
+
+#     ingredient_zero = request.args.get("ingr_zero_input")
+
+#     return render_template("reingold_tilford.html", ingr_zero=ingredient_zero)
+
+
+# @app.route("/tree_cuisine")
+# def ingredient_sim_cuisines_d3():
+#     """Show tree diagram of ingredients that pair with ingr_zero in a cuisine."""
+
+#     ingredient_zero = request.args.get("ingr_zero_input")
+#     cuisine = request.args.get("cuisine_input")
+
+#     return render_template("tree_cuisine.html", ingr_zero_name=ingredient_zero, cuisine=cuisine)
 
 @app.route("/ingredients")
 def ingredient_list():

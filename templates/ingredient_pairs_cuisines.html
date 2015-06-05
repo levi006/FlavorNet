@@ -12,7 +12,7 @@
 		<li>{{ ingr_sim.ingr_one_id.name }} shares: {{ ingr_sim.count }} occurrences </li>
 
 	{% endfor %}
-	
+
 <style>
 
 .node circle {
@@ -56,7 +56,7 @@ var svg = d3.select("body").append("svg")
 
 // console.log(svg);
 
-d3.json("/ingredient_pairs_cuisine.json={{ingr_zero}}&{{cuisine}}", function(error, json) {
+d3.json("/ingredient_pairs_cuisine.json?ingredient={{ingr_zero_name}}&cuisine={{cuisine}}", function(error, json) {
   var nodes = tree.nodes(json),
       links = tree.links(nodes);
 
