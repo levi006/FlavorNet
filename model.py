@@ -216,6 +216,7 @@ class IngredientSimilarity(db.Model):
     #                         backref=db.backref("ingredient_similarities"))
 
     def __repr__(self):
+        
         """Provide helpful representation when printed."""
 
         return "<IngredientSimilarity id=%s ingr_zero=%s ingr_one=%s shared_fcs=%s>" % (

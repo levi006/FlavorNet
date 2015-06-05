@@ -13,4 +13,95 @@
 
 	{% endfor %}
 
+<style>
+
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+</style>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script>
+
+// $.get(
+//   "/ingredient_pairs.json",
+//   $("#").serialize(),
+//   function (result) {
+//     console.dir(result); // yay debugging!
+//       }
+// );
+
+var width = 900,
+    height = 500;
+
+// console.log(width);
+// console.log("HEY WE'RE HERE!!!");
+
+var tree = d3.layout.tree()
+    .size([height, width - 160]);
+
+var diagonal = d3.svg.diagonal()
+    .projection(function(d) { return [d.y, d.x]; });
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(40,0)");
+
+// console.log(svg);
+
+d3.json("/ingredient_pairs.json?ingredient={{ingr_zero_name}}", function(error, json) {
+  console.log("got here")
+  var nodes = tree.nodes(json),
+      links = tree.links(nodes);
+
+// console.log(nodes)
+// console.log(links)
+
+  var link = svg.selectAll("path.link")
+      .data(links)
+    .enter().append("path")
+      .attr("class", "link")
+      .attr("d", diagonal);
+
+  var node = svg.selectAll("g.node")
+      .data(nodes)
+    .enter().append("g")
+      .attr("class", "node")
+      .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+
+// console.log(node)
+
+  node.append("circle")
+      .attr("r", 4.5);
+
+  node.append("text")
+      .attr("dx", function(d) { return d.children ? -8 : 8; })
+      .attr("dy", 3)
+      .attr("text-anchor", function(d) { return d.children ? "end" : "start"; })
+      .text(function(d) { return d.name; });
+// console.log(node)
+// consolde.log(d.children)
+});
+
+
+
+d3.select(self.frameElement).style("height", height + "px");
+
+</script>
+
 {% endblock %}
