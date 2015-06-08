@@ -88,14 +88,14 @@ def ingredient_pairs_json():
 
     ingr_zero = request.args.get("ingredient")
 
-    ingr_zero= Ingredient.query.filter(Ingredient.name==ingr_zero).first()
-    ingr_zero_id = ingr_zero.id
+    ingr_zero_obj = Ingredient.query.filter(Ingredient.name==ingr_zero).first()
+    print "ingr_zero_obj is ", ingr_zero_obj
+    ingr_zero_id = ingr_zero_obj.id
 
     
-    parent_name = ingr_zero.name
+    parent_name = ingr_zero_obj.name
 
     data["name"] = parent_name
-    #indexing the dictionary 
 
     data["children"] = []
 
@@ -154,18 +154,18 @@ def ingredient_pairs_cuisine_json():
     """Show list of ingredients that pair with ingr_zero in a cuisine."""
 
     data = {}
-    print "jsonified data is : " + str(json.dumps(data))
+    # # print "jsonified data is : " + str(json.dumps(data))
 
     ingr_zero_name = request.args.get("ingredient")
-    print 50 * "!"
-    print ingr_zero_name
+    # # print 50 * "!"
+    # print ingr_zero_name
     cuisine_name = request.args.get("cuisine")
-    print cuisine_name
-    print "Cuisine is " + str(cuisine_name)
-    print 50 * "@"
+    # # print cuisine_name
+    # print "Cuisine is " + str(cuisine_name)
+    # # print 50 * "@"
 
-    # ingr_zero_name = "banana"
-    # cuisine = "Italian"
+    # # ingr_zero_name = "banana"
+    # # cuisine = "Italian"
 
     ingr_zero = Ingredient.query.filter(Ingredient.name==ingr_zero_name).first()
     ingr_zero_id = ingr_zero.id
@@ -175,45 +175,96 @@ def ingredient_pairs_cuisine_json():
    
 
     cuisine_obj = Cuisine.query.filter(Cuisine.name==cuisine_name).first()
-    print cuisine_obj
-    print "Cuisine_obj is " + str(cuisine_obj)
-    print 25* "HAY LOOK HERE"
-    print "Cuisine_obj.id is " +str(cuisine_obj.id)
+    # print cuisine_obj
+    # print "Cuisine_obj is " + str(cuisine_obj)
+    # print 10* "HAY LOOK HERE "
+    # print "Cuisine_obj.id is " +str(cuisine_obj.id)
     cuisine_id = cuisine_obj.id
-    print "Cusine.name is " + str(cuisine_obj.name)
-    print 50 * "!"
+    # print "Cusine.name is " + str(cuisine_obj.name)
+    # print 50 * "!"
 
 
-    parent_name = ingr_zero.name
-    cuisine_name = cuisine_obj.name
+    # parent_name = ingr_zero.name
+    # cuisine_name = cuisine_obj.name
 
-    data["name"] = parent_name
-    print "jsonified data is : " + str(json.dumps(data))
+    # data["name"] = parent_name
+    # # print "jsonified data is : " + str(json.dumps(data))
 
-    # data["children"] = cuisine_name
-    # print "jsonified data is : " + str(json.dumps(data))
+    # # data["children"] = cuisine_name
+    # # print "jsonified data is : " + str(json.dumps(data))
 
-    # data["cluster"] = []
-    # print "jsonified data is : " + str(json.dumps(data))
+    # # data["cluster"] = []
+    # # print "jsonified data is : " + str(json.dumps(data))
 
     ingr_one_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_zero_id,\
                                                      IngredientSimCuisine.cuisine==cuisine_id)\
-                                                     .order_by(desc(IngredientSimCuisine.count)).limit(25).all()
+                                                     .order_by(desc(IngredientSimCuisine.count)).limit(10).all()
+
+
     
-    data["name"] = parent_name
+    # print "ingr_one_sim_pairs is " + str(ingr_one_sim_pairs)
 
-    inner_list = {}
-    inner_list["name"] = cuisine_name
-    inner_list["children"] = []
+    ingr_one_ids = [ ingr_similarity.ingr_one for ingr_similarity in ingr_one_sim_pairs ]
+    
+    print "ingr_one_ids is " , ingr_one_ids
+    # print "cuisine_id is" + str(cuisine_id)
 
-    for pair in ingr_one_sim_pairs:
+    ingr_one_names = []
+
+    for ingr_one_id in ingr_one_ids: 
+
+        ingr_one_obj = Ingredient.query.filter(Ingredient.id==ingr_one_id).first()
+
+        ingr_one_names.append(ingr_one_obj.name)
+
+    print "ingr_one_names is:", ingr_one_names
+
+    # inner_list = {}
+    # inner_list["name"] = cuisine_name
+    # inner_list["children"] = []
+
+    # for ingr_one in ingr_one_ids:
+    #     # the_id = ingr_one.id
+
+    #     ingr_two_pairs_json = {}
+
+    #     ingr_two_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_one,\
+    #                                              IngredientSimCuisine.cuisine==cuisine_id)\
+    #                                              .order_by(desc(IngredientSimCuisine.count)).limit(10).all()
+
+
+    #     ingredient_one_matches = [ingr_sim_cuis.ingr_one_id.name for ingr_sim_cuis in ingr_two_pairs]
+    #     print "INGREDIENT_ONE_MATCHES ARE: " , ingredient_one_matches
         
-        ingr_one = Ingredient.query.get(pair.ingr_one).json()
-        print "ingr_one is: " + str(ingr_one)
-        print "ingr_one count is: " + str(pair.count) 
-        ingr_one["size"] = pair.count
+    #     single_leaf_data = ingredient_one_matches[1]
+    #     leaf = {}
+    #     leaf["name"] = single_leaf_data
+    #     leaf["size"] = 1
+    #     print "jsonified leaf is: " , ingredient_one_matches 
 
-        inner_list["children"].append(ingr_one)
+
+    #     # ingr_one["children"] = ingredient_one_matches
+
+    #     # inner_list["children"].append(ingr_one.json())
+    #     # print "ingr_one is: " , ingr_one 
+
+    # print "INNER LIST IS: " + str(inner_list["children"])
+    # # print "ingr_two_pairs is:" + str(ingr_two_pairs)
+
+    # # ingr_two_pairs_json = {}
+ 
+    # data["name"] = parent_name
+
+  
+
+    # for pair in ingr_one_sim_pairs:
+        
+    #     ingr_one = Ingredient.query.get(pair.ingr_one).json()
+    #     # print "ingr_one is: " + str(ingr_one)
+    #     # print "ingr_one count is: " + str(pair.count) 
+    #     ingr_one["size"] = pair.count
+
+    #     inner_list["children"].append(ingr_one.json())
 
 
         #print "ingr_one.name is: " + str(ingr_one.name)
@@ -224,12 +275,12 @@ def ingredient_pairs_cuisine_json():
 
         #inner_list.append(ingr_one)
 
-        print "jsonified inner loop is : " + str(json.dumps(inner_list))
+        # print "jsonified inner loop is : " + str(json.dumps(inner_list))
 
 
 
-    data["children"] = []
-    data["children"].append(inner_list)
+    # data["children"] = []
+    # data["children"].append(inner_list)
 
     # ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
     #                                     .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
@@ -240,57 +291,149 @@ def ingredient_pairs_cuisine_json():
 
     #     data["children"].append(child)
 
-    # data = {"name": "lemon",
-    #         "children":[
-    #         {
-    #             "name":"Italian",
-    #             "children":[
-    #             { "name":"wheat", "size":1},
-    #             { "name":"chaff", "size":2}
+    
+    # data = 
+    # cuisine_list["children"] = ingr_zero_list 
+    # ingr_zero_list["children"] = ingr_one_list
+    # ingr_one_list["children"] = []
+
+    ingredient_zero_name = request.args.get("ingredient")
+    # # print 50 * "!"
+    # print ingr_zero_name
+    cuisine_name = request.args.get("cuisine")
+
+    # cuisine_name = "Italian"
+    cuisine_size = 70000
+
+    # ingredient_zero_name = "lemon"
+    ingredient_zero_size = 100000
+
+    def create_subtree(root_name, root_size, leaf_names, leaf_size):
+        # creates a tree from Lists & Dicts that can be jsonified later
+
+        leaf_objects = []
+
+        for leaf_name in leaf_names:
+            leaf = {}
+            leaf["name"] = leaf_name
+            leaf["size"] = leaf_size
+            # print "leaf object is:", leaf
+
+            leaf_objects.append(leaf)
+
+        root = {}
+        root["name"] = root_name
+        root["size"] = root_size
+        root["children"] = leaf_objects
+
+        return root
+
+    all_subtrees = []
+
+    for ingr_one_id in ingr_one_ids:
+
+        ingr_one_obj = Ingredient.query.filter(Ingredient.id==ingr_one_id).first()
+        ingr_one_name = ingr_one_obj.name
+
+        
+        ingr_two_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_one_id,\
+                                                 IngredientSimCuisine.cuisine==cuisine_id)\
+                                                 .order_by(desc(IngredientSimCuisine.count)).limit(10).all()
+
+
+        print "ingr_one_sim_pairs is " + str(ingr_one_sim_pairs)
+
+        ingr_two_ids = [ ingr_similarity.ingr_one for ingr_similarity in ingr_two_sim_pairs ]
+
+        print "ingr_two_ids is " , ingr_two_ids
+
+        ingr_two_names = []
+
+        for ingr_two_id in ingr_two_ids: 
+
+            ingr_two_obj = Ingredient.query.filter(Ingredient.id==ingr_two_id).first()
+
+            ingr_two_names.append(ingr_two_obj.name)
+
+        print "ingr_two_names is:", ingr_two_names
+
+        sub_tree = create_subtree(ingr_one_name, 50000, ingr_two_names, 20000)
+
+        all_subtrees.append(sub_tree)
+    
+
+
+
+    # sub_tree_2 = create_subtree(ingr_one_names[1], 20000, ["3", "4"], 10000)
+    # sub_tree_3 = create_subtree(ingr_one_names[2], 20000, ["5", "6"], 10000)
+
+    combined_subtrees = {}
+    combined_subtrees["name"] = cuisine_name
+    combined_subtrees["size"] = cuisine_size
+    combined_subtrees["children"] = all_subtrees
+    # combined_subtrees["children"] = [sub_tree_1, sub_tree_2, sub_tree_3]
+
+    result = {}
+    result["name"] = ingredient_zero_name
+    result["size"] = ingredient_zero_size
+    result["children"] = [combined_subtrees]
+
+    data = result
+
+    # one = {}
+    # one["name"] = "1"
+    # one["size"] = 10000
+
+    # two = {}
+    # two["name"] = "2"
+    # two["size"] = 10000
+
+    # A = {}
+    # A["name"] = "A"
+    # A["size"] = 20000
+
+    # A_children = []
+    # A_children.append(one)
+    # A_children.append(two)
+    # A["children"] = A_children   
+    # A["children"] = [one, two]
+
+    # data = A
+
+    # data = {
+    #     "name": "lemon", "size":50000,
+    #     "children":[
+    #         { "name":"Italian", "size":30000,
+    #             "children":
+    #             [
+    #                 { "name":"A",
+    #                    "children" : 
+    #                    [ 
+    #                         { "name":"1", "size":10000},
+    #                         { "name":"2", "size":10000}
+    #                    ]
+    #                 },
+    #                 { "name":"B",
+    #                   "children": 
+    #                     [
+    #                         { "name":"3", "size":7000},
+    #                         { "name":"4", "size":7000}
+    #                     ]
+    #                 },
+    #                 { "name":"c",
+    #                   "children": 
+    #                     [
+    #                         { "name":"5", "size":3000},
+    #                         { "name":"6", "size":3000}
+    #                     ]
+    #                 }
     #             ]
-    #         }]}
-
-    # data = {"ingr_one_name": "banana",
-    #       "cuisine": "Italian", 
-    #       "ingr_one": [
-    #         {
-    #           "id": 1257, 
-    #           "name": "orange"
-    #         }, 
-    #         {
-    #           "id": 1094, 
-    #           "name": "raspberry"
-    #         }, 
-    #         {
-    #           "id": 1399, 
-    #           "name": "vanilla"
-    #         }, 
-    #         {
-    #           "id": 1197, 
-    #           "name": "apple"
-    #         }, 
-    #         {
-    #           "id": 1179, 
-    #           "name": "wheat"
-    #         }, 
-    #         {
-    #           "id": 1160, 
-    #           "name": "peanut"
-    #         }, 
-    #         {
-    #           "id": 998, 
-    #           "name": "olive_oil"
-    #         }, 
-    #         {
-    #           "id": 1089, 
-    #           "name": "rum"
     #         }
-    #       ], 
+    #     ]
+    # }
+     
 
-    #     }
-
-
-    print "Jsonified result is" + str(json.dumps(data))
+    print data 
 
     return jsonify(data) 
 
@@ -366,8 +509,7 @@ def flavor_compound_detail(id):
 
 
 if __name__ == "__main__":
-    # We have to set debug=True here, since it has to be True at the point
-    # that we invoke the DebugToolbarExtension
+
     app.debug = True
 
     connect_to_db(app)

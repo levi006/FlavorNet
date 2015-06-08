@@ -66,13 +66,23 @@ class Ingredient(db.Model):
 
     def json(self):
 
-        json_ingr_sims = {}
+        json_ingredients= {}
 
-        json_ingr_sims["id"] = self.id 
+        json_ingredients["id"] = self.id 
 
-        json_ingr_sims["name"] = self.name 
+        json_ingredients["name"] = self.name 
 
-        return json_ingr_sims
+        # if self.category:
+        #     print "self.category_id is " + str(self.category)
+        #     print self.category_id
+        # else: 
+        #     print str(self.name) + " doesn't have a category"
+        #     # self.category_id.name = "no category"
+        #     print "HAY self.category_id.name DOESN'T PASS" 
+
+        # json_ingredients["category_id"] = self.category.name 
+
+        return json_ingredients
 
 class FlavorCompound(db.Model):
     """Flavour compounds make up the flavor profile of an individual ingredient and 
@@ -147,6 +157,16 @@ class Cuisine(db.Model):
         
         return "<Cuisine id=%s name=%s>" % (
             self.id, self.name)
+
+    def json(self):
+
+        json_cuisines = {}
+
+        json_cuisines["id"] = self.id 
+
+        json_cuisines["name"] = self.name
+
+        return json_cuisines
 
     def teardown(self):
         table = Table('cuisines', Base.metadata, autoload=True)
@@ -247,6 +267,25 @@ class IngredientSimCuisine(db.Model):
 
         return "<IngredientSimCuisine id=%s ingr_zero=%s ingr_one=%s cuisine=%s count=%s>" % (
         self.id, self.ingr_zero, self.ingr_one, self.cuisine, self.count)
+
+    def json(self):
+
+        json_ingr_one_sims = {}
+
+        json_ingr_one_sims["id"] = self.id 
+
+        json_ingr_one_sims["ingr_zero"] = self.ingr_zero_id.json()
+
+        json_ingr_one_sims["ingr_one"] = self.ingr_one_id.json()
+
+        json_ingr_one_sims["count"] = self.count.json()
+
+        json_ingr_one_sims["cuisine"] = self.cuisine_id.json()
+
+
+        return json_ingr_one_sims
+
+
   
     def tearDown(self):
         table = Table('ingr_sims_in_cuisines', Base.metadata, autoload=True)
