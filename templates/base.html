@@ -31,13 +31,30 @@
 
 			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			      <ul class="nav navbar-nav">
+<!-- 			        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+			        <li><a href="#">Link</a></li> -->
 			        <li class="dropdown">
 			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">References <span class="caret"></span></a>
 			          <ul class="dropdown-menu" role="menu">
 			            <li><a href="/ingredients">All Ingredients</a></li>
 			            <li><a href="/flavorcompounds">All Flavor Compounds</a></li>
+			            <<!-- li><a href="#">Something else here</a></li>
+			            <li class="divider"></li>
+			            <li><a href="#">Separated link</a></li>
+			            <li class="divider"></li>
+			            <li><a href="#">One more separated link</a></li> -->
 			          </ul>
 			        </li>
+			      </ul>
+			      <!-- <form class="navbar-form navbar-left" role="search">
+			        <div class="form-group">
+			          <input type="text" class="form-control" placeholder="Search">
+			        </div>
+			        <button type="submit" class="btn btn-default">Submit</button>
+			      </form> -->
+			      <ul class="nav navbar-nav navbar-right">
+			        <li><a href="#">About</a></li>
+			      </ul>
 			    </div>
 			  </div>
 			</nav>
@@ -62,28 +79,31 @@
 
                         <div id="right_hand_col" class="col-md-6">
                             <p>Search ingredients within a cuisine:</p>
+							<div class="row">
+								
+								<div class="col-md-6">
+	                            	<form class="form-inline" action="/ingredient_pairs/cuisines">
+	                            	
+		                                <div id="ingredient_pairs_typeahead">
+		                                    <div class="form-group">
 
-                            <form class="form-inline" action="/ingredient_pairs/cuisines">
+		                                        <input class="typeahead form-control" type="text" name="ingr_zero_input" placeholder="i.e. lemon">
+		                                    </div>	
+		                                </div>
+		                        </div>
+		                                <br>
+		                                <div class="col-md-6">
+			                                <div id="cuisines_typeahead">
+			                                    <div class="form-group">
 
-                                <div id="ingredient_pairs_typeahead">
-                                    <div class="form-group">
-
-                                        <input class="typeahead form-control" type="text" name="ingr_zero_input" placeholder="i.e. lemon">
-
-                                    </div>
-                                </div>
-                                <br>
-
-                                <div id="cuisines_typeahead">
-                                    <div class="form-group">
-
-                                        <input class="typeahead form-control" type="text" name="cuisine_input" placeholder="i.e. Italian">
-
-                                    </div>
-                                </div>
-                                <br>
-                                <input type="submit">
-                            </form>
+			                                        <input class="typeahead form-control" type="text" name="cuisine_input" placeholder="i.e. Italian">
+			                                      </div>  		
+			                                    </div>
+			                                </div>
+		                                <br>
+		                                <input type="submit">
+								</form>
+		                    </div>   
                         </div>
                     </div>
                 </div>
