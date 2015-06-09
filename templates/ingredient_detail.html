@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>{{ ingredient.name }}</h1>
+
+<div class="text_results">
+<h3>{{ ingredient.name }}</h3>
 
 <ul>
 
@@ -11,5 +13,6 @@
  
 {% endfor %}
 </ul>
+</div>
 
 {% endblock %}

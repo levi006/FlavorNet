@@ -1,123 +1,165 @@
 {% extends 'base.html' %}
 {% block content %}
+<style>
 
-<h1>Similar Ingredients</h1>
-  
-	{{ ingr_zero_name.upper() }}  
+.node {
+  cursor: pointer;
+}
 
-<br><br>
-  
-	{% for ingr_one_name in ingr_one_names %}
-	
-		<li>{{ ingr_one_name[0] }} shares: {{ ingr_one_name[1]}} compounds </li>
+.node circle {
+  fill: solid;
+  stroke: steelblue;
+  stroke-width: px;
+}
 
-	{% endfor %}
+.node text {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+</style>
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="text_results">
+      <h3>  
+        {{ ingr_zero_name.upper() }}  
+      </h3>
+      <br><br>
+        
+        {% for ingr_one_name in ingr_one_names %}
+        
+          <li>{{ ingr_one_name[0] }} shares: {{ ingr_one_name[1]}} compounds </li>
+
+        {% endfor %}
+    </div>    
+  </div>
+
+  <div class="col-md-6">
+    <div id="svg_test">
+    </div>
+  </div>
+</div>
+
 
 <script>
 
-var width = 960,
-    height = 500,
-    root;
+  var width = 500,
+      height = 500,
+      root;
 
-var force = d3.layout.force()
-    .linkDistance(200)
-    .charge(-120)
-    .gravity(.05)
-    .size([width, height])
-    .on("tick", tick);
+  //var color = d3.scale.category20()
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+  var force = d3.layout.force()
+      .linkDistance(120)
+      .charge(-120)
+      .gravity(.05)
+      .size([width, height])
+      .on("tick", tick);
 
-var link = svg.selectAll(".link"),
-    node = svg.selectAll(".node");
+  var svg = d3.select("#svg_test").append("svg")
+      .attr("width", width)
+      .attr("height", height);
+      console.log(svg) 
 
-d3.json("/ingredient_pairs.json?ingredient={{ingr_zero_name}}", function(error, json) {
-  root = json;
-  update();
-});
+  var link = svg.selectAll(".link"),
+      node = svg.selectAll(".node");
 
-function update() {
-  var nodes = flatten(root),
-      links = d3.layout.tree().links(nodes);
+  d3.json("/ingredient_pairs.json?ingredient={{ingr_zero_name}}", function(error, json) {
+    root = json;
+    update();
+  });
 
-  // Restart the force layout.
-  force
-      .nodes(nodes)
-      .links(links)
-      .start();
+  function update() {
+    var nodes = flatten(root),
+        links = d3.layout.tree().links(nodes);
 
-  // Update links.
-  link = link.data(links, function(d) { return d.target.id; });
+    // Restart the force layout.
+    force
+        .nodes(nodes)
+        .links(links)
+        .start();
 
-  link.exit().remove();
+    // Update links.
+    link = link.data(links, function(d) { return d.target.id; });
 
-  link.enter().insert("line", ".node")
-      .attr("class", "link");
+    link.exit().remove();
 
-  // Update nodes.
-  node = node.data(nodes, function(d) { return d.id; });
+    link.enter().insert("line", ".node")
+        .attr("class", "link");
 
-  node.exit().remove();
+    // Update nodes.
+    node = node.data(nodes, function(d){ return d.id; });
 
-  var nodeEnter = node.enter().append("g")
-      .attr("class", "node")
-      .on("click", click)
-      .call(force.drag);
+    node.exit().remove();
 
-  nodeEnter.append("circle")
-      .attr("r", function(d) { return Math.sqrt(d.size) / 10 || 4.5; });
+    var nodeEnter = node.enter().append("g")
+        .attr("class", "node")
+        .on("click", click)
+        .call(force.drag);
 
-  nodeEnter.append("text")
-      .attr("dy", ".35em")
-      .text(function(d) { return d.name; });
+    nodeEnter.append("circle")
+        .attr("r", function(d){ return Math.sqrt(d.size) / 10 || 4.5; });
 
-  node.select("circle")
-      .style("fill", color);
-}
+    nodeEnter.append("text")
+        .attr("dy", ".35em")
+        .text(function(d){ return d.name; });
 
-function tick() {
-  link.attr("x1", function(d) { return d.source.x; })
-      .attr("y1", function(d) { return d.source.y; })
-      .attr("x2", function(d) { return d.target.x; })
-      .attr("y2", function(d) { return d.target.y; });
-
-  node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-}
-
-function color(d) {
-  return d._children ? "#3182bd" // collapsed package
-      : d.children ? "#c6dbef" // expanded package
-      : "#fd8d3c"; // leaf node
-}
-
-// Toggle children on click.
-function click(d) {
-  if (d3.event.defaultPrevented) return; // ignore drag
-  if (d.children) {
-    d._children = d.children;
-    d.children = null;
-  } else {
-    d.children = d._children;
-    d._children = null;
-  }
-  update();
-}
-
-// Returns a list of all nodes under the root.
-function flatten(root) {
-  var nodes = [], i = 0;
-
-  function recurse(node) {
-    if (node.children) node.children.forEach(recurse);
-    if (!node.id) node.id = ++i;
-    nodes.push(node);
+    node.select("circle")
+        .style("fill", color);
   }
 
-  recurse(root);
-  return nodes;
-}
+  function tick() {
+    link.attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
 
-</script>
+    node.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+  }
+
+  function color(d) {
+    return d._children ? "#3182bd" // collapsed package
+        : d.children ? "#c6dbef" // expanded package
+        : "#fd8d3c"; // leaf node
+  }
+
+  // Toggle children on click.
+  function click(d) {
+    if (d3.event.defaultPrevented) return; // ignore drag
+    if (d.children) {
+      d._children = d.children;
+      d.children = null;
+    } else {
+      d.children = d._children;
+      d._children = null;
+    }
+    update();
+  }
+
+  // Returns a list of all nodes under the root.
+  function flatten(root) {
+    var nodes = [], i = 0;
+
+    function recurse(node) {
+      if (node.children) node.children.forEach(recurse);
+      if (!node.id) node.id = ++i;
+      nodes.push(node);
+    }
+
+    recurse(root);
+    return nodes;
+  }
+
+  </script>
+
+
+
 {% endblock %}

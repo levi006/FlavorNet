@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
-
-  <h1>Flavor Compounds</h1>
+<div class="text_results">
+  <h3>All Flavor Compounds</h3>
   
   <ul>
   {% for flavorcompound in flavorcompounds %}
@@ -10,4 +10,5 @@
     </li>
   {% endfor %}
   </ul>
+ </div>
 {% endblock %}

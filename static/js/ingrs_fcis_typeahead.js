@@ -51,7 +51,7 @@ $.getJSON( "/cuisines.json", function( data ) {
 
 $.each( data, function( key, val ) {
     cuisines_list.push(key);
-console.log(key)
+// console.log(key)
   });
 });
 

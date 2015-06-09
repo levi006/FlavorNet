@@ -1,17 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<h1>Similar Ingredients, within Cuisines</h1>
-  
-	{{ ingr_zero_name.upper() }} : {{ cuisine.upper() }}  
-
-<br><br>
-
-	{% for ingr_sim in ingr_sim_cuisine_results %}
-	
-		<li>{{ ingr_sim.ingr_one_id.name }} shares: {{ ingr_sim.count }} occurrences </li>
-
-	{% endfor %}
 
 <style>
 
@@ -20,7 +9,7 @@
 }
 
 .node circle {
-  fill: #fff;
+  fill: solid;
   stroke: steelblue;
   stroke-width: 1.5px;
 }
@@ -36,13 +25,18 @@
 }
 
 </style>
+
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
+
+<div id="d3_svg">
+</div>
+
 <script>
 
-var margin = {top: 20, right: 120, bottom: 20, left: 120},
-    width = 960 - margin.right - margin.left,
-    height = 800 - margin.top - margin.bottom;
+var margin = {top: 0, right: 120, bottom: 20, left: 120},
+    width = 800 - margin.right - margin.left,
+    height = 500 - margin.top - margin.bottom;
     
 var i = 0,
     duration = 750,
@@ -54,7 +48,9 @@ var tree = d3.layout.tree()
 var diagonal = d3.svg.diagonal()
     .projection(function(d) { return [d.y, d.x]; });
 
-var svg = d3.select("body").append("svg")
+$(function() {/*put stuff in me!*/})
+
+var svg = d3.select("#d3_svg").append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -179,4 +175,19 @@ function click(d) {
 }
 
 </script>
+
+  
+<div class="text_results">
+  <h3>
+    {{ ingr_zero_name.upper() }} : {{ cuisine.upper() }}  
+  </h3>
+
+<br><br>
+
+  {% for ingr_sim in ingr_sim_cuisine_results %}
+  
+    <li>{{ ingr_sim.ingr_one_id.name }} shares: {{ ingr_sim.count }} occurrences </li>
+
+  {% endfor %}
+<!-- </div> -->
 {% endblock %}

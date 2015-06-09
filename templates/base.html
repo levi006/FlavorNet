@@ -1,68 +1,117 @@
 <!DOCTYPE html>
 <html>
-	<head>
-    	<title>Flavornet</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    	<link rel="stylesheet" type="text/css" href="/static/css/homepage.css">
-    	<link rel="stylesheet" type="text/css" href="/static/css/typeahead.css">
-    	<script src="/static/js/d3.min.js"></script>
-    	<script src="http://d3js.org/d3.v3.min.js"></script>	
-    	<script src="https://code.jquery.com/jquery.js"></script>
-    	<script src="/static/js/typeahead.js"></script>
-    	<script src="/static/js/ingrs_fcis_typeahead.js"></script>
-    	
-	</head>
-<body>
-<h3>Flavornet</h3>
+    <head>
+        <title>Flavornet</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/static/css/simplex_theme.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/homepage.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/typeahead.css">
+        <script src="/static/js/d3.min.js"></script>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="https://code.jquery.com/jquery.js"></script>
+        <script src="/static/js/typeahead.js"></script>
+        <script src="/static/js/ingrs_fcis_typeahead.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 
-<div class="navbar">
-	<div="indices">
-		<p>Ingredients</p>
-		<p><a href="/ingredients">View all ingredients</a>
-	
-		<p>Flavor Compounds</p>
-		<p><a href="/flavorcompounds">View all flavor compounds</a>
-	</div>
-</div>
+    </head>
 
-<div id="user_input">
-	<p> To query ingredient pairs:</p>
- 
-		<form action="/ingredient_pairs">
-	  		<div id ="ingredient_pairs_typeahead">
-		  		<label>
-		  		<input class="typeahead form-control" name="ingr_zero_input" type="text" placeholder="i.e. lemon">
-		  		</label>
-	  		</div>  		
-	<br>
-	    <input type="submit"> 
-		</form>
+    <body>
+        <div class="entire_wrapper">
+        	<nav class="navbar navbar-default">
+			  <div class="container-fluid">
+			    <div class="navbar-header">
+			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			      <a class="navbar-brand" href="/">flavornet</a>
+			    </div>
 
-	<p>To query ingredients within a cuisine:</p>
+			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			      <ul class="nav navbar-nav">
+			        <!-- <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+			        <li><a href="#">Link</a></li> -->
+			        <li class="dropdown">
+			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">References <span class="caret"></span></a>
+			          <ul class="dropdown-menu" role="menu">
+			            <li><a href="/ingredients">All Ingredients</a></li>
+			            <li><a href="/flavorcompounds">All Flavor Compounds</a></li>
+<!-- 			            <li><a href="#">Something else here</a></li>
+			            <li class="divider"></li>
+			            <li><a href="#">Separated link</a></li>
+			            <li class="divider"></li>
+			            <li><a href="#">One more separated link</a></li> -->
+			          </ul>
+			        </li>
+			      <!-- </ul>
+			      <form class="navbar-form navbar-left" role="search">
+			        <div class="form-group">
+			          <input type="text" class="form-control" placeholder="Search">
+			        </div>
+			        <button type="submit" class="btn btn-default">Submit</button>
+			      </form>
+			      <ul class="nav navbar-nav navbar-right">
+			        <li><a href="#">Link</a></li>
+			      </ul> -->
+			    </div>
+			  </div>
+			</nav>
+              
+            <div class = "container">
+                <div class="row">
+                    <div id="user_sidebar">
+                        <div id="left_hand_col" class="col-md-6">
+                            <p> Search ingredient pairs:</p>
 
-		<form action="/ingredient_pairs/cuisines">
-			<div id="ingredient_pairs_typeahead">
-		        <label>Enter a starting ingredient:
-		        <input class="typeahead form-control" type="text" name="ingr_zero_input" placeholder="i.e. lemon">
-		        </label>
-	        </div>
-	<br>
-			<div id="cuisines_typeahead">
-		        <label>Enter a cuisine:
-		        <input class="typeahead form-control" type="text" name="cuisine_input" placeholder="i.e. Italian">
-		        </label>
-	        </div>
-	<br>
-	    <input type="submit"> 
-		</form>
-</div>
+                            <form class="form-inline" action="/ingredient_pairs">
+                                <div id ="ingredient_pairs_typeahead">
+                                    <div class="form-group">
+                                        <input class="typeahead form-control" name="ingr_zero_input" type="text" placeholder="i.e. lemon">
+                                    </div>
+                                </div>
+                                <br>
+                                <input type="submit">
+                            </form>
+                            <br>
+                        </div>
 
-<br>
+                        <div id="right_hand_col" class="col-md-6">
+                            <p>Search ingredients within a cuisine:</p>
 
-{% block content %}
+                            <form class="form-inline" action="/ingredient_pairs/cuisines">
 
-{% endblock %}
-		
-</body>
+                                <div id="ingredient_pairs_typeahead">
+                                    <div class="form-group">
+
+                                        <input class="typeahead form-control" type="text" name="ingr_zero_input" placeholder="i.e. lemon">
+
+                                    </div>
+                                </div>
+                                <br>
+
+                                <div id="cuisines_typeahead">
+                                    <div class="form-group">
+
+                                        <input class="typeahead form-control" type="text" name="cuisine_input" placeholder="i.e. Italian">
+
+                                    </div>
+                                </div>
+                                <br>
+                                <input type="submit">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="col-md-6">
+                        {% block content %}
+
+                        {% endblock %}
+                </div>
+            </div>
+
+        </div>
+    </body>
 </html>
-

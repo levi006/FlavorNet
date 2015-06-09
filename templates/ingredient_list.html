@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 
-  <h1>Ingredients</h1>
-  
+<div class= "text_results">
+  <h3>All Ingredients</h3>
   
   {% for ingredient in ingredients %}
     <li>
@@ -10,4 +10,5 @@
     </li>
   {% endfor %}
   </ul>
+ </div>
 {% endblock %}
