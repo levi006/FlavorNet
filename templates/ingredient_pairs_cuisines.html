@@ -29,7 +29,27 @@
 <body>
 <script src="http://d3js.org/d3.v3.min.js"></script>
 
-<div id="d3_svg">
+<div class="row">
+  <div class="col-md-6">
+    <div class="text_results">
+      <h3>
+        {{ ingr_zero_name.upper() }} : {{ cuisine.upper() }}  
+      </h3>
+
+    <br><br>
+
+      {% for ingr_sim in ingr_sim_cuisine_results %}
+      
+        <li>{{ ingr_sim.ingr_one_id.name }} shares: {{ ingr_sim.count }} occurrences </li>
+
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div id="svg_test">
+    </div>
+  </div>
 </div>
 
 <script>
@@ -50,7 +70,7 @@ var diagonal = d3.svg.diagonal()
 
 $(function() {/*put stuff in me!*/})
 
-var svg = d3.select("#d3_svg").append("svg")
+var svg = d3.select("#svg_test").append("svg")
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -177,17 +197,5 @@ function click(d) {
 </script>
 
   
-<div class="text_results">
-  <h3>
-    {{ ingr_zero_name.upper() }} : {{ cuisine.upper() }}  
-  </h3>
 
-<br><br>
-
-  {% for ingr_sim in ingr_sim_cuisine_results %}
-  
-    <li>{{ ingr_sim.ingr_one_id.name }} shares: {{ ingr_sim.count }} occurrences </li>
-
-  {% endfor %}
-<!-- </div> -->
 {% endblock %}
