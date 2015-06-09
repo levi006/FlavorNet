@@ -132,7 +132,7 @@ def cuisine_ingredient_pairs():
 
     ingr_one_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_zero_id,\
                                                      IngredientSimCuisine.cuisine==cuisine_id)\
-                                                     .order_by(desc(IngredientSimCuisine.count)).limit(25).all()
+                                                     .order_by(desc(IngredientSimCuisine.count)).limit(10).all()
     
     # ingr_one_list = IngredientSimilarity.query.filter(IngredientSimilarity.ingr_zero == ingr_zero_id)\
     #                                     .order_by(desc(IngredientSimilarity.shared_fcs)).limit(10).all()
