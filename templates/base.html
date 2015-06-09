@@ -62,25 +62,24 @@
             <div class = "container">
                 <div class="row">
                     <div id="user_sidebar">
-                        <div id="left_hand_col" class="col-md-6">
+                        <div id="left_hand_col" class="col-xs-6">
                             <p> Search ingredient pairs:</p>
-                            	<div class="row">
-                            		<div class="col-md-8"> 
-			                            <form class="form-inline" action="/ingredient_pairs">
-			                                <div id ="ingredient_pairs_typeahead">
-			                                    <div class="form-group">
-			                                        <input class="typeahead form-control" name="ingr_zero_input" type="text" placeholder="i.e. lemon">
-			                                    </div>
-			                                </div>
-			                            </form>    
-			                    	</div>
-			                    	<div class="col-md-4"> 
-                            			<input type="submit">
-                            		</div>
-								</div>
+                            <div class="row">
+	                            <form class="form-inline" action="/ingredient_pairs">
+                            	<div class="col-xs-4">
+	                                <div id ="ingredient_pairs_typeahead">
+	                                    <div class="form-group">
+	                                        <input class="typeahead form-control" name="ingr_zero_input" type="text" placeholder="i.e. lemon">
+	                                    </div>
+	                                </div>
+	                            </div>    
+	                        	<div class="col-xs-8">
+	                                <input type="submit">
+	                            </div>
+								</form>
+	                        </div>    
+                            <br>
                         </div>
-                       		 	
-					
 
                         <div id="right_hand_col" class="col-md-6">
                             <p>Search ingredients within a cuisine:</p>
