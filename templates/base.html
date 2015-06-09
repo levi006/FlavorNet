@@ -80,9 +80,9 @@
                         <div id="right_hand_col" class="col-md-6">
                             <p>Search ingredients within a cuisine:</p>
 							<div class="row">
-								
-								<div class="col-md-6">
-	                            	<form class="form-inline" action="/ingredient_pairs/cuisines">
+								<form class="form-inline" action="/ingredient_pairs/cuisines">
+	                            	
+								<div class="col-md-4">
 	                            	
 		                                <div id="ingredient_pairs_typeahead">
 		                                    <div class="form-group">
@@ -91,17 +91,18 @@
 		                                    </div>	
 		                                </div>
 		                        </div>
-		                                <br>
-		                                <div class="col-md-6">
-			                                <div id="cuisines_typeahead">
-			                                    <div class="form-group">
+		                                
+		                        <div class="col-md-4">
+			                        <div id="cuisines_typeahead">
+			                            <div class="form-group">
 
-			                                        <input class="typeahead form-control" type="text" name="cuisine_input" placeholder="i.e. Italian">
-			                                      </div>  		
-			                                    </div>
-			                                </div>
-		                                <br>
+			                                    <input class="typeahead form-control" type="text" name="cuisine_input" placeholder="i.e. Italian">
+			                            </div>  		
+			                        </div>
+			                    </div>
+		                        <div class="col-md-4">        
 		                                <input type="submit">
+		                        </div>
 								</form>
 		                    </div>   
                         </div>
