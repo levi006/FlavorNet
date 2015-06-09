@@ -64,18 +64,23 @@
                     <div id="user_sidebar">
                         <div id="left_hand_col" class="col-md-6">
                             <p> Search ingredient pairs:</p>
-
-                            <form class="form-inline" action="/ingredient_pairs">
-                                <div id ="ingredient_pairs_typeahead">
-                                    <div class="form-group">
-                                        <input class="typeahead form-control" name="ingr_zero_input" type="text" placeholder="i.e. lemon">
-                                    </div>
-                                </div>
-                                <br>
-                                <input type="submit">
-                            </form>
-                            <br>
+                            	<div class="row">
+                            		<div class="col-md-8"> 
+			                            <form class="form-inline" action="/ingredient_pairs">
+			                                <div id ="ingredient_pairs_typeahead">
+			                                    <div class="form-group">
+			                                        <input class="typeahead form-control" name="ingr_zero_input" type="text" placeholder="i.e. lemon">
+			                                    </div>
+			                                </div>
+			                            </form>    
+			                    	</div>
+			                    	<div class="col-md-4"> 
+                            			<input type="submit">
+                            		</div>
+								</div>
                         </div>
+                       		 	
+					
 
                         <div id="right_hand_col" class="col-md-6">
                             <p>Search ingredients within a cuisine:</p>
@@ -110,6 +115,9 @@
                 </div>
 
                  <div class="col-md-6">
+                 <br>
+                 <br>
+                 <br>
                         {% block content %}
 
                         {% endblock %}
