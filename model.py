@@ -72,16 +72,6 @@ class Ingredient(db.Model):
 
         json_ingredients["name"] = self.name 
 
-        # if self.category:
-        #     print "self.category_id is " + str(self.category)
-        #     print self.category_id
-        # else: 
-        #     print str(self.name) + " doesn't have a category"
-        #     # self.category_id.name = "no category"
-        #     print "HAY self.category_id.name DOESN'T PASS" 
-
-        # json_ingredients["category_id"] = self.category.name 
-
         return json_ingredients
 
 class FlavorCompound(db.Model):
