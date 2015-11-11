@@ -27,8 +27,6 @@ def load_recipes_from_file(recipe_filename):
 
     for row in open(recipe_filename):
         recipe_info = row.rstrip().split("\t")
-
-        # print recipe_info 
         
         cuisine, ingredients_list = recipe_info[0], recipe_info[1:]
 
@@ -79,9 +77,6 @@ def load_flavorcompounds():
         compound_info = row.strip().split("\t")
 
         compound_id, name = int(compound_info[0]), compound_info[1]
-        
-        #print type(compound_id)
-        #print name 
 
         FC_id = FlavorCompound(id=compound_id, name=name)
         db.session.add(FC_id)
@@ -96,9 +91,7 @@ def load_categories():
     for row in categories_file:
         categories_info = row.strip().split("\t")
 
-        name = categories_info[2]
-   
-        #print ingredient, category   
+        name = categories_info[2]  
 
         category = Category(name=name)
         db.session.add(category)
@@ -114,8 +107,6 @@ def load_compounds_to_ingredient():
         ingr_comp_info = row.strip().split("\t")
 
         ingredient_id, compound_id = ingr_comp_info[0], ingr_comp_info[1]
-
-        #print ingredient_id, compound_id   
 
         compound_ingredient = FlavorCompoundIngredient(ingredient_id=ingredient_id, compound_id=compound_id)
         db.session.add(compound_ingredient)
@@ -136,7 +127,6 @@ def load_cuisines():
         if cuisine_info[1] == None:
             cuisine_info = NULL
    
-        #print cuisine, region
         cuisine = Cuisine(name=cuisine_name)
     
         db.session.add(cuisine)
@@ -155,8 +145,6 @@ def load_regions():
 
         if regions_info[1] == None:
             regions_info = NULL
-
-        #print cuisine, region
 
         region = Region(name=region_name) 
         db.session.add(region)
@@ -187,8 +175,6 @@ def load_ingredient_similarities():
 def load_ingredient_sim_cuisines():
     """Loading ingredient pairs, number of shared compounds, and cuisine.""" 
 
-
-    # recipes = Recipe.query.all()
     print "started recipe query at: " + str(datetime.now())
     recipes = Recipe.query.all()
     print "Queried recipe list at: " + str(datetime.now())
@@ -213,10 +199,6 @@ def load_ingredient_sim_cuisines():
                             
             ingr_combos[ingr_combo] = ingr_combos.get(ingr_combo, 0) + 1
 
-        # if(recipes_seen % 100 == 0):
-        #    print(recipes_seen)
-    # finished constructing the in-memory dictionary
-
     print "Finished constructing map at: "  + str(datetime.now())
 
     combos_seen = 0
@@ -228,10 +210,7 @@ def load_ingredient_sim_cuisines():
         ingrsimcuis = IngredientSimCuisine(ingr_zero=ingr_zero,
                                 ingr_one=ingr_one,
                                 cuisine=cuisine,
-                                count=count)
-        
-        # print "Inserting row: " + str(ingr_zero) + " " + str(ingr_one)\
-        #         + " " + str(cuisine) + " " + str(count) 
+                                count=count)        
         
         db.session.add(ingrsimcuis)
         combos_seen += 1
@@ -241,31 +220,7 @@ def load_ingredient_sim_cuisines():
             db.session.commit()
             print "Finished commit "  + str(datetime.now())
 
-    db.session.commit()
-    
-    # print ingr_combos.keys()[2]
-    # print len(ingr_combos) 
-
-            # ingrsimcuis =  IngredientSimCuisine.query.filter_by(ingr_zero=ingr_zero)\
-            #                                          .filter_by(ingr_one=ingr_one)\
-            #                                          .filter_by(cuisine=cuisine_id).first()
-            # if ingrsimcuis:
-            #     ingrsimcuis.count += 1
-
-            # else:
-            #     ingrsimcuis = IngredientSimCuisine(ingr_zero=ingr_zero,
-            #                         ingr_one=ingr_one,
-            #                         cuisine=cuisine_id)
-
-       #      db.session.add(ingrsimcuis)
-       #  db.session.commit()
-        
-       # if(recipes_seen % 100 == 0):
-       #      print(recipes_seen)
-
-                
-    # db.session.commit()   
-                                        
+    db.session.commit()        
 
 if __name__ == "__main__":
     connect_to_db(app)

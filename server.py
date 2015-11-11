@@ -234,9 +234,6 @@ def ingredient_pairs_cuisine_json():
 
         all_subtrees.append(sub_tree)
     
-
-
-
     # sub_tree_2 = create_subtree(ingr_one_names[1], 20000, ["3", "4"], 10000)
     # sub_tree_3 = create_subtree(ingr_one_names[2], 20000, ["5", "6"], 10000)
 
@@ -244,6 +241,7 @@ def ingredient_pairs_cuisine_json():
     combined_subtrees["name"] = cuisine_name
     combined_subtrees["size"] = cuisine_size
     combined_subtrees["children"] = all_subtrees
+    
     # combined_subtrees["children"] = [sub_tree_1, sub_tree_2, sub_tree_3]
 
     result = {}
