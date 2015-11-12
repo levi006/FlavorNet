@@ -81,7 +81,8 @@ class FlavorCompound(db.Model):
 
     ingredients = db.relationship("Ingredient", 
                             secondary="flavor_compounds_ingredient",
-                            backref=db.backref("flavor_compounds")) #classname, table, table
+                            backref=db.backref("flavor_compounds")) 
+                            #the secondary backreference for ingredients is defined using classname, table name and table name.
 
     
     def __repr__(self):
