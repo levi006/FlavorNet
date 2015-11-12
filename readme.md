@@ -31,7 +31,7 @@ Users can search for an ingredient and generate a list of foods that contain the
 
 ## Comparing Ingredients within a Cuisine (Query 2)
 
-Users can search for an ingredient and generate a list of foods that contain the same flavor compounds. 
+Users can search for an ingredient in the context of a single cuisine and generate a list of most common ingredient pairs within the cuisine. 
 
 ##Constructing Data Tables 
 
