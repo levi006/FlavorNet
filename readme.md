@@ -25,7 +25,6 @@ D3.js, Javascript, Jinja, Jquery, HTML, CSS, Bootstrap
 
 The source datasets for the project is publicly available on [YY Ahn's](http://yongyeol.com/) website. The recipe datasets with cuisine information was scraped from the recipe aggregator sites allrecipes.com, etc.(look this up in the paper)  
 
-
 ## Comparing Ingredients (Query 1)
 
 Users can search for an ingredient and generate a list of foods that contain the same flavor compounds. 
@@ -33,27 +32,6 @@ Users can search for an ingredient and generate a list of foods that contain the
 ## Comparing Ingredients within a Cuisine (Query 2)
 
 Users can search for an ingredient and generate a list of foods that contain the same flavor compounds. 
-
-<!-- The counters provide an up-to-date count of tickets in the inbox for each time period. The counters link through to the corresponding sentiment's inbox.
-
-![dashboard]
-(/gifs/graphs.gif)
-
-*Counters and Line Graph*
-
-![dashboard]
-(/gifs/piecharts.gif)
-
-*Source pie graphs responding to clicks* -->
-
-<!-- ## Inbox
-
-
-
-![inbox]
-(/gifs/inbox.gif)
-
-*Viewing message in inbox, updating sentiment in system, and replying* -->
 
 ##Constructing Data Tables 
 
@@ -66,5 +44,7 @@ Users can search for an ingredient and generate a list of foods that contain the
 
 -D3.js
 -Discussing trees vs. force layout 
+
+
 
 ##Further Steps 
