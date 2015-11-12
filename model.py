@@ -61,13 +61,9 @@ class Ingredient(db.Model):
         print "Teardown complete for ingredients"    
 
     def json(self):
-
         json_ingredients= {}
-
         json_ingredients["id"] = self.id 
-
         json_ingredients["name"] = self.name 
-
         return json_ingredients
 
 class FlavorCompound(db.Model):
@@ -116,14 +112,11 @@ class FlavorCompoundIngredient(db.Model):
     ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
     compound_id = db.Column(db.Integer, db.ForeignKey('flavor_compounds.id'))
 
-
     ingredient = db.relationship("Ingredient",
                            backref=db.backref("flavor_compounds_ingredients"))
 
     compound = db.relationship("FlavorCompound",
                             backref=db.backref("flavor_compounds_ingredients"))
-
-
 
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -146,13 +139,9 @@ class Cuisine(db.Model):
             self.id, self.name)
 
     def json(self):
-
         json_cuisines = {}
-
         json_cuisines["id"] = self.id 
-
         json_cuisines["name"] = self.name
-
         return json_cuisines
 
     def teardown(self):
@@ -256,24 +245,14 @@ class IngredientSimCuisine(db.Model):
         self.id, self.ingr_zero, self.ingr_one, self.cuisine, self.count)
 
     def json(self):
-
         json_ingr_one_sims = {}
-
         json_ingr_one_sims["id"] = self.id 
-
         json_ingr_one_sims["ingr_zero"] = self.ingr_zero_id.json()
-
         json_ingr_one_sims["ingr_one"] = self.ingr_one_id.json()
-
         json_ingr_one_sims["count"] = self.count.json()
-
         json_ingr_one_sims["cuisine"] = self.cuisine_id.json()
-
-
         return json_ingr_one_sims
 
-
-  
     def tearDown(self):
         table = Table('ingr_sims_in_cuisines', Base.metadata, autoload=True)
         table.drop(db.engine)
