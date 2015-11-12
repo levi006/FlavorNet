@@ -203,13 +203,6 @@ class IngredientSimilarity(db.Model):
     ingr_zero = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
     ingr_one = db.Column(db.Integer, db.ForeignKey('ingredients.id'))
     shared_fcs = db.Column(db.Integer, nullable=False)
-    
-    # ingr_zero = db.relationship("Ingredient",
-    #                        backref=db.backref("ingredient_similarities"))
-
-
-    # ingr_one = db.relationship("Ingredient",
-    #                         backref=db.backref("ingredient_similarities"))
 
     def __repr__(self):
         
