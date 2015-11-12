@@ -66,6 +66,7 @@ class Ingredient(db.Model):
         json_ingredients["name"] = self.name 
         return json_ingredients
 
+
 class FlavorCompound(db.Model):
     """Flavour compounds make up the flavor profile of an individual ingredient and 
     contribute towards a recipe's flavor profile."""
@@ -124,6 +125,7 @@ class FlavorCompoundIngredient(db.Model):
         return "<FlavorCompoundIngredient id=%s, ingredient_id = %s, compound_id= %s >" % (
             self.id, self.ingredient_id, self.compound_id)
 
+
 class Cuisine(db.Model):
     """Recipes fall under Cuisines."""
 
@@ -149,6 +151,7 @@ class Cuisine(db.Model):
         table.drop(db.engine)
         table.create(db.engine)
         print "Teardown complete for cuisines"
+
 
 class Region(db.Model):
     """Region(s) that a recipe or cuisine is associated with."""
@@ -194,6 +197,7 @@ class RecipeIngredient(db.Model):
         return "<Recipe id=%s recipe_id=%s ingredient_id=%s>" % (
             self.id, self.recipe_id, self.ingredient_id)     
 
+
 class IngredientSimilarity(db.Model):
     """Tracks how many compounds two ingredients have in common."""
 
@@ -210,6 +214,7 @@ class IngredientSimilarity(db.Model):
 
         return "<IngredientSimilarity id=%s ingr_zero=%s ingr_one=%s shared_fcs=%s>" % (
         self.id, self.ingr_zero, self.ingr_one, self.shared_fcs)
+
 
 class IngredientSimCuisine(db.Model):
     """ is the relationship between recipes and their ingredients."""
