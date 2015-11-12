@@ -42,11 +42,7 @@ class Ingredient(db.Model):
 
     id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     name = db.Column(db.String(64), nullable=False, unique=True)
-    # fc_name= db.Column(db.Integer, db.ForeignKey('flavor_compounds.name'))
 
-    # fc = db.relationship('FlavorCompound',
-    #                         backref=db.backref('flavor_compounds'))
-    
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
 
     category = db.relationship("Category",
