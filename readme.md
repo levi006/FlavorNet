@@ -5,7 +5,8 @@
 - [Technologies](#technologies)
 - [Data](#the-data)
 - [Project Structure](#project-structure)
-- [Next Steps](#project-structure) 
+- [Data Visulization](#data-visualization)
+- [Next Steps](#next-steps) 
 
 ## Introduction
 
@@ -28,28 +29,28 @@ The source datasets for the project is publicly available on [YY Ahn's](http://y
 
 ## Project Structure 
 
-## Comparing Ingredients (Query 1)
+### Comparing Ingredients (Query 1)
 
 Users can search for an ingredient and generate a list of foods that contain the same flavor compounds. 
 
 Results are represesnted using a force layout visualization. 
 
-## Comparing Ingredients within a Cuisine (Query 2)
+### Comparing Ingredients within a Cuisine (Query 2)
 
 Users can search for an ingredient in the context of a single cuisine and generate a list of most common ingredient pairs within the cuisine. 
 
 Results are represented using a collapsible Reingold Tilford tree, where users can click through to explore ingredient combinatins. 
 
-##Constructing Data Tables 
+### Constructing Data Tables 
 
 - difficulty in seeding the tables
 - preset queries allow for direct query of a data vs. dynamic sql queries (which take a long time)
 - construction relationship tables
 - combinatorics methods 
 
-##Data Visualization
+## Data Visualization
 
-[![Demo](https://github.com/levi006/FlavorNet/blob/master/static/img/runthrough.gif)
+[!Demo](https://github.com/levi006/FlavorNet/blob/master/static/img/runthrough.gif)
 
 
-##Further Steps 
+##Next Steps 
