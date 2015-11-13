@@ -3,7 +3,7 @@
 ## Table of Contents
 - [Introduction](#introduction)
 - [Technologies](#technologies)
-- [Data](#the data)
+- [Data](#the-data)
 - [Project Structure](#project-structure)
 - [Next Steps](#project-structure) 
 
@@ -25,6 +25,8 @@ D3.js, Javascript, Jinja, Jquery, HTML, CSS, Bootstrap
 ## The Data
 
 The source datasets for the project is publicly available on [YY Ahn's](http://yongyeol.com/) website. The recipe datasets with cuisine information was scraped from the recipe aggregator sites allrecipes.com, etc.(look this up in the paper)  
+
+## Project Structure 
 
 ## Comparing Ingredients (Query 1)
 
@@ -50,9 +52,7 @@ Results are represented using a collapsible Reingold Tilford tree, where users c
 -D3.js
 -Discussing trees vs. force layout 
 
-[![Demo:](https://github.com/levi006/FlavorNet/blob/master/static/img/runthrough.gif)
-
-
+[!Demo:](https://github.com/levi006/FlavorNet/blob/master/static/img/runthrough.gif)
 
 
 
