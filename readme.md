@@ -50,7 +50,7 @@ Results are represented using a collapsible Reingold Tilford tree, where users c
 -D3.js
 -Discussing trees vs. force layout 
 
-(https://github.com/levi006/FlavorNet/blob/master/static/img/runthrough.gif)
+[![Demo:](https://github.com/levi006/FlavorNet/blob/master/static/img/runthrough.gif)
 
 
 
