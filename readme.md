@@ -3,8 +3,9 @@
 ## Table of Contents
 - [Introduction](#introduction)
 - [Technologies](#technologies)
+- [Data](#the data)
 - [Project Structure](#project-structure)
-- [Next Steps](#project-structure) -->
+- [Next Steps](#project-structure) 
 
 ## Introduction
 
@@ -29,9 +30,13 @@ The source datasets for the project is publicly available on [YY Ahn's](http://y
 
 Users can search for an ingredient and generate a list of foods that contain the same flavor compounds. 
 
+Results are represesnted using a force layout visualization. 
+
 ## Comparing Ingredients within a Cuisine (Query 2)
 
 Users can search for an ingredient in the context of a single cuisine and generate a list of most common ingredient pairs within the cuisine. 
+
+Results are represented using a collapsible Reingold Tilford tree, where users can click through to explore ingredient combinatins. 
 
 ##Constructing Data Tables 
 
@@ -44,6 +49,10 @@ Users can search for an ingredient in the context of a single cuisine and genera
 
 -D3.js
 -Discussing trees vs. force layout 
+
+[logo](https://github.com/levi006/FlavorNet/blob/master/static/img/runthrough.gif)
+
+
 
 
 
