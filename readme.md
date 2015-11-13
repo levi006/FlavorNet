@@ -55,5 +55,4 @@ Results are represented using a collapsible Reingold Tilford tree, where users c
 [!Demo](https://github.com/levi006/FlavorNet/blob/master/static/img/runthrough.gif)
 
 
-
 ##Further Steps 
