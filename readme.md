@@ -37,4 +37,4 @@ This logic behind this query is simply the number of flavor compounds a given in
 
 Initially I flirted with using k-means to classify ingredients based on common flavor commpounds, but given the relative sparsity of the data set, I decided in favor of creating a relational table that tracked ingredient pairs within a given cuisine and the number of times the respective ingredient pair and cuisine appeared in the data set.     
 
-The itertools library was instrumental to track all possible discrete ingredient pair-cuisine combinations and discard duplicate permutations (i.e. broccoli and kale in Italian cuisine is the same as kale and broccoli in Italian cuisine). 
+The itertools library was instrumental to track all possible discrete ingredient pair-cuisine combinations and discard duplicate permutations (i.e. "broccoli and kale in Italian cuisine" is the same as "kale and broccoli in Italian cuisine" and not two different combinations). 
