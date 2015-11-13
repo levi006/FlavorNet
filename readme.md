@@ -35,7 +35,7 @@ Users can search for an ingredient and generate a list of foods that contain the
 
 #### Query 2: Comparing Ingredients within a Cuisine
 
-Initially I flirted with using k-means to classify ingredients based on common flavor commpounds, but decided in favor of creating a relational table that tracked ingredient pairs within a given cuisine and the   
+Initially I flirted with using k-means to classify ingredients based on common flavor commpounds, but decided in favor of creating a relational table that tracked ingredient pairs within a given cuisine and the count of how many times the respective ingredient pair and cuisine appeared in the data set.     
 
 - difficulty in seeding the tables
 - preset queries allow for direct query of a data vs. dynamic sql queries (which take a long time)
