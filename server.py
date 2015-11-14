@@ -180,7 +180,7 @@ def ingredient_pairs_cuisine_json():
 
     cuisine_size = 70000 
 
-    ingredient_zero_size = 100000000
+    ingredient_zero_size = 100000
 
     def create_subtree(root_name, root_size, leaf_names, leaf_size):
         # creates a tree from Lists & Dicts that can be jsonified later
