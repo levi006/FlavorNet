@@ -46,7 +46,7 @@ To figure out what ingredients pair well ("well" defined by the number of flavor
 
 I decided in favor of creating a relational table that tracked ingredient pairs within a given cuisine and the number of times the respective ingredient pair and cuisine appeared in all the recipes in the data set.     
 
-The i*tertools* Python library was instrumental to track all possible discrete ingredient pair-cuisine combinations and discard duplicate permutations (i.e. "broccoli and kale in Italian cuisine" is the same as "kale and broccoli in Italian cuisine" and should not be counted separately). 
+The *itertools* Python library was instrumental to track all possible discrete ingredient pair-cuisine combinations and discard duplicate permutations (i.e. "broccoli and kale in Italian cuisine" is the same as "kale and broccoli in Italian cuisine" and should not be counted separately). 
 
 Once this table was created, given an input ingredient and cuisine, users would be able to discover the most commonly combined ingredients characteristic to the cuisine. For example, a search with "lemon" and "Italian" will yield different ingredient pairs than "lemon" and "Asian". 
 
