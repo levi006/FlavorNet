@@ -31,8 +31,8 @@ The data can be characterized as follows:
 
 - 1,529 ingredients
 - 1,106 flavor compounds (each ingredient could have anywhere from one to hundreds of flavor compounds. For example, "egg" contains 49 flavor compounds, while "black tea" has 239 flavor compounds).
-- 1,169,685 possible ingredient pairs (egg - beef, egg - pork, egg - *n*, etc.) from a total of 55,786 recipes
-- 200,011 ingredient pairs when calculated within their respective cuisines
+- 1,169,685 possible ingredient pairs, ex. (egg - beef, egg - pork, egg - *n*, etc.) from a total of 55,786 recipes
+- 200,011 ingredient pairs when calculated within their respective cuisines, ex. (egg - beef, French), (egg - beef, Bangladesh), (egg - beef, Cajun/Creole), etc. 
 
 
 ## Algorithms 
