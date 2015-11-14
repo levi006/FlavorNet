@@ -178,9 +178,9 @@ def ingredient_pairs_cuisine_json():
 
     cuisine_name = request.args.get("cuisine")
 
-    cuisine_size = 70000 
+    cuisine_size = 70000 #for d3 node sizes. 
 
-    ingredient_zero_size = 100000
+    ingredient_zero_size = 100000 #for d3 node sizes.
 
     def create_subtree(root_name, root_size, leaf_names, leaf_size):
         # creates a tree from Lists & Dicts that can be jsonified later
