@@ -201,38 +201,38 @@ def ingredient_pairs_cuisine_json():
 
         return root
 
-    all_subtrees = []
+        all_subtrees = []
 
-    for ingr_one_id in ingr_one_ids:
+        for ingr_one_id in ingr_one_ids:
 
-        ingr_one_obj = Ingredient.query.filter(Ingredient.id==ingr_one_id).first()
-        ingr_one_name = ingr_one_obj.name
+            ingr_one_obj = Ingredient.query.filter(Ingredient.id==ingr_one_id).first()
+            ingr_one_name = ingr_one_obj.name
 
-        
-        ingr_two_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_one_id,\
-                                                 IngredientSimCuisine.cuisine==cuisine_id)\
-                                                 .order_by(desc(IngredientSimCuisine.count)).limit(10).all()
+            
+            ingr_two_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_one_id,\
+                                                     IngredientSimCuisine.cuisine==cuisine_id)\
+                                                     .order_by(desc(IngredientSimCuisine.count)).limit(10).all()
 
 
-        print "ingr_one_sim_pairs is " + str(ingr_one_sim_pairs)
+            print "ingr_one_sim_pairs is " + str(ingr_one_sim_pairs)
 
-        ingr_two_ids = [ ingr_similarity.ingr_one for ingr_similarity in ingr_two_sim_pairs ]
+            ingr_two_ids = [ ingr_similarity.ingr_one for ingr_similarity in ingr_two_sim_pairs ]
 
-        print "ingr_two_ids is " , ingr_two_ids
+            print "ingr_two_ids is " , ingr_two_ids
 
-        ingr_two_names = []
+            ingr_two_names = []
 
-        for ingr_two_id in ingr_two_ids: 
+            for ingr_two_id in ingr_two_ids: 
 
-            ingr_two_obj = Ingredient.query.filter(Ingredient.id==ingr_two_id).first()
+                ingr_two_obj = Ingredient.query.filter(Ingredient.id==ingr_two_id).first()
 
-            ingr_two_names.append(ingr_two_obj.name)
+                ingr_two_names.append(ingr_two_obj.name)
 
-        print "ingr_two_names is:", ingr_two_names
+            print "ingr_two_names is:", ingr_two_names
 
-        sub_tree = create_subtree(ingr_one_name, 50000, ingr_two_names, 20000)
+            sub_tree = create_subtree(ingr_one_name, 50000, ingr_two_names, 20000)
 
-        all_subtrees.append(sub_tree)
+            all_subtrees.append(sub_tree)
     
     # Ensuing sub_trees should look like: sub_tree_2 =create_subtree(ingr_one_names[1], 20000, ["3", "4"], 10000)
     # And so on: sub_tree_3 = create_subtree(ingr_one_names[2], 20000, ["5", "6"], 10000)
