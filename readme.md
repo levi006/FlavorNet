@@ -17,11 +17,11 @@ FlavorNet is an interactive reference that allows users (molecular gastronomy ge
 
 **Backend**
 
-Python, Flask, SQLAlchemy, SQLite, AJAX
+Python, Flask, SQLAlchemy, SQLite
 
 **Frontend**
 
-D3.js, Javascript, Jinja, Jquery, HTML, CSS, Bootstrap
+D3.js, Javascript, Jinja, AJAX, Jquery, HTML, CSS, Bootstrap
 
 ## The Data
 
