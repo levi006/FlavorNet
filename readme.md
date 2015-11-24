@@ -37,17 +37,17 @@ The data can be characterized as follows:
 
 ## Installation
 
-1. Make sure you have python installed (most Macs have it installed)
+1. Make sure you have Python installed (if you're on a Mac, Python should already be installed).
 
-1. Make sure you have pip (package management) installed 
+1. Make sure you have pip (a package management system for Python) installed. If you need to install it, type:  
 
      `sudo easy_install pip`
 
-1. Install the virtual environment tool
+1. Install the virtual environment tool:
 
      `sudo pip install virtualenv`
 
-1. Create virtual environment inside the working directory.
+1. Create a virtual environment inside the working directory:
 
      `virtualenv env`
 
@@ -55,7 +55,7 @@ The data can be characterized as follows:
 
      `source env/bin/activate`
 
-1. Download requirements:
+1. Download the requirements:
 
      `pip install -r requirements.txt`
 
@@ -63,9 +63,7 @@ The data can be characterized as follows:
 
      `python server.py`
 
-1. Navigate to: "http://localhost:5000" to view app
-
-1. Then, source it.
+1. Finally, navigate to: "http://localhost:5000" in your browser to view the app!
 
 
 ## Algorithms 
