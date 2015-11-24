@@ -4,6 +4,8 @@
 
 <style>
 
+/*Homepage CSS*/ 
+
 body {
     background-color: "white";
     background-image:none;
@@ -12,15 +14,7 @@ body {
     background-attachment: fixed;
 }
 
-
-</style>
-
-
-{% endblock %}
-
-{% block content %}
-
-<style>
+/*relevant to formatting of Reingold-Tilford Tree: D3.js*/ 
 
 .node {
   cursor: pointer;
@@ -45,7 +39,11 @@ body {
 
 </style>
 
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<!--extending the homepage template--> 
+
+{% endblock %}
+
+{% block content %}
 
 <div class="row">
   <div class="col-md-8">
@@ -55,7 +53,6 @@ body {
       </h3>
 
     <br><br>
-
       {% for ingr_sim in ingr_sim_cuisine_results %}
       
         <li>{{ ingr_sim.ingr_one_id.name }} shares: {{ ingr_sim.count }} occurrences </li>
@@ -70,9 +67,11 @@ body {
   </div>
 </div>
 
+<!--Beginning of Collapsible Reingold Tilford Tree D3.js--> 
+
 <script>
 
-var margin = {top: 0, right: 120, bottom: 20, left: 120},
+var margin = {top: 20, right: 120, bottom: 20, left: 120},
     width = 800 - margin.right - margin.left,
     height = 500 - margin.top - margin.bottom;
     
@@ -213,7 +212,5 @@ function click(d) {
 }
 
 </script>
-
-  
 
 {% endblock %}
