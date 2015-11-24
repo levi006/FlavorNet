@@ -4,6 +4,7 @@
 - [Introduction](#introduction)
 - [Technologies](#technologies)
 - [The Data](#the-data)
+- [Installation](#installation)
 - [Algorithms](#algorithms)
  
 
