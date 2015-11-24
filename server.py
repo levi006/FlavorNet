@@ -1,6 +1,6 @@
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, request, jsonify, sessions, g
+from flask import Flask, render_template, request, jsonify
 # from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, Cuisine, Ingredient, FlavorCompound, FlavorCompoundIngredient, IngredientSimilarity, IngredientSimCuisine
@@ -89,9 +89,10 @@ def ingredient_pairs_json():
     ingr_zero = request.args.get("ingredient")
 
     ingr_zero_obj = Ingredient.query.filter(Ingredient.name==ingr_zero).first()
-    print "ingr_zero_obj is ", ingr_zero_obj
-    ingr_zero_id = ingr_zero_obj.id
 
+    print "ingr_zero_obj is ", ingr_zero_obj
+    
+    ingr_zero_id = ingr_zero_obj.id
     
     parent_name = ingr_zero_obj.name
 
