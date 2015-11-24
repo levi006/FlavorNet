@@ -140,6 +140,7 @@ def ingredient_pairs_cuisine_json():
 
     data = {}
 
+    #user input for cuisine and their chosen ingredient, ingr_zero 
     ingr_zero_name = request.args.get("ingredient")
 
     cuisine_name = request.args.get("cuisine")
@@ -154,36 +155,25 @@ def ingredient_pairs_cuisine_json():
 
     cuisine_id = cuisine_obj.id
 
+    #Find ten most frequently paired ingredients (ingr one) to ingr zero within a cuisine 
+
     ingr_one_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_zero_id,\
                                                      IngredientSimCuisine.cuisine==cuisine_id)\
                                                      .order_by(desc(IngredientSimCuisine.count)).limit(10).all()
 
+    print "ingr_one_sim_pairs is " + str(ingr_one_sim_pairs)
 
-
+    #Pull ingr one ids from similarity pair objects
     ingr_one_ids = [ ingr_similarity.ingr_one for ingr_similarity in ingr_one_sim_pairs ]
     
     print "ingr_one_ids is " , ingr_one_ids
 
-    ingr_one_names = []
+    cuisine_size = 70000 #for d3 root sizes. 
 
-    for ingr_one_id in ingr_one_ids: 
-
-        ingr_one_obj = Ingredient.query.filter(Ingredient.id==ingr_one_id).first()
-
-        ingr_one_names.append(ingr_one_obj.name)
-
-    print "ingr_one_names is:", ingr_one_names
-
-    ingredient_zero_name = request.args.get("ingredient")
-
-    cuisine_name = request.args.get("cuisine")
-
-    cuisine_size = 70000 #for d3 node sizes. 
-
-    ingredient_zero_size = 100000 #for d3 node sizes.
+    ingr_zero_size = 100000 #for d3 root sizes.
 
     def create_subtree(root_name, root_size, leaf_names, leaf_size):
-        # creates a tree from Lists & Dicts that can be jsonified later
+        #helper function that creates a single layer tree using the flare.json format required for the Reingold-Tilford tree. 
 
         leaf_objects = []
 
@@ -205,20 +195,20 @@ def ingredient_pairs_cuisine_json():
 
     for ingr_one_id in ingr_one_ids:
 
+        #Querying for the ingr_one_obj using the ingr_one_ids
         ingr_one_obj = Ingredient.query.filter(Ingredient.id==ingr_one_id).first()
+        #Pulling the ingr_one_name from object
         ingr_one_name = ingr_one_obj.name
 
-        
+        #Querying for the ingr_two_sim_pairs using the ingr_one_ids
         ingr_two_sim_pairs = IngredientSimCuisine.query.filter(IngredientSimCuisine.ingr_zero==ingr_one_id,\
                                                  IngredientSimCuisine.cuisine==cuisine_id)\
                                                  .order_by(desc(IngredientSimCuisine.count)).limit(10).all()
-
-
-        print "ingr_one_sim_pairs is " + str(ingr_one_sim_pairs)
+        
 
         ingr_two_ids = [ ingr_similarity.ingr_one for ingr_similarity in ingr_two_sim_pairs ]
 
-        print "ingr_two_ids is " , ingr_two_ids
+        print "ingr_two_ids is ", ingr_two_ids
 
         ingr_two_names = []
 
@@ -226,12 +216,15 @@ def ingredient_pairs_cuisine_json():
 
         for ingr_two_id in ingr_two_ids: 
 
+            #Querying for the ingr_two_objects using the ingr_two_ids 
             ingr_two_obj = Ingredient.query.filter(Ingredient.id==ingr_two_id).first()
 
+            #Pulling the ingr_two names from the ingr_two_obj   
             ingr_two_names.append(ingr_two_obj.name)
 
         print "ingr_two_names is:", ingr_two_names
 
+        #Calling helper function create_subtree
         sub_tree = create_subtree(ingr_one_name, 50000, ingr_two_names, 20000)
 
         all_subtrees.append(sub_tree)
@@ -248,8 +241,8 @@ def ingredient_pairs_cuisine_json():
     # combined_subtrees["children"] = [sub_tree_1, sub_tree_2, sub_tree_3]
 
     result = {}
-    result["name"] = ingredient_zero_name
-    result["size"] = ingredient_zero_size
+    result["name"] = ingr_zero_name
+    result["size"] = ingr_zero_size
     result["children"] = [combined_subtrees]
 
     data = result
