@@ -222,6 +222,8 @@ def ingredient_pairs_cuisine_json():
 
         ingr_two_names = []
 
+        #creates subtree of ingr_twos (the second tier of ingredient pairs)
+
         for ingr_two_id in ingr_two_ids: 
 
             ingr_two_obj = Ingredient.query.filter(Ingredient.id==ingr_two_id).first()
