@@ -4,6 +4,7 @@
 
 <style>
 
+/*Homepage CSS*/ 
 body {
     background-image:none;
     background-color: "white";
@@ -12,16 +13,7 @@ body {
     background-attachment: fixed;
 }
 
-
-</style>
-
-
-{% endblock %}
-
-{% block content %}
-
-<style>
-
+/*relevant to formatting of Force Layout: D3.js*/ 
 .node {
   cursor: pointer;
 }
@@ -44,7 +36,11 @@ body {
 
 </style>
 
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<!--extending the base template--> 
+
+{% endblock %}
+
+{% block content %}
 
 <div class="row">
   <div class="col-md-8">
@@ -59,6 +55,7 @@ body {
           <li>{{ ingr_one_name[0] }} shares: {{ ingr_one_name[1]}} compounds </li>
 
         {% endfor %}
+
     </div>    
   </div>
 
@@ -68,15 +65,15 @@ body {
   </div>
 </div>
 
+<!--Beginning of Collapsible Force Layou: D3.js--> 
 
 <script>
-
 
   var width = 1000,
       height = 1000,
       root;
 
-  //var color = d3.scale.category20()
+  var color = d3.scale.category20()
 
   var force = d3.layout.force()
       .linkDistance(120)
