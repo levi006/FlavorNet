@@ -35,6 +35,39 @@ The data can be characterized as follows:
 - 200,011 ingredient pairs when calculated within their respective cuisines, ex. (egg - beef, French), (egg - beef, Bangladesh), (egg - beef, Cajun/Creole), etc. 
 
 
+## Installation
+
+1. Make sure you have python installed (most Macs have it installed)
+
+1. Make sure you have pip (package management) installed 
+
+     `sudo easy_install pip`
+
+1. Install the virtual environment tool
+
+     `sudo pip install virtualenv`
+
+1. Create virtual environment inside the working directory.
+
+     `virtualenv env`
+
+1. Source the environment:
+
+     `source env/bin/activate`
+
+1. Download requirements:
+
+     `pip install -r requirements.txt`
+
+1. Run the server:
+
+     `python server.py`
+
+1. Navigate to: "http://localhost:5000" to view app
+
+1. Then, source it.
+
+
 ## Algorithms 
 
 #### Comparing Ingredients
