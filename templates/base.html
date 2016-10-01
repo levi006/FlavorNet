@@ -64,7 +64,7 @@
 			  </div>
 			</nav>
               
-            <div class = "container">
+<!--             <div class = "container">
                 <div class="row">
                     <div id="user_sidebar">
                         <div id="left_hand_col" class="col-xs-6" style="font-size:15px">
@@ -116,7 +116,26 @@
 		                    </div>   
                         </div>
                     </div>
-                </div>
+                </div> -->
+
+                <div class="container">
+		            <div class="row">
+		                <form class="form-inline row" action="/search">
+		                    <div class='form-group col-sm-4'>
+		                        <label class="control-label" for="focusedInput">Ingredient: </label>
+		                        <input class="form-control" id="focusedInput" type="text" name="ingredient-search" placeholder="ex. lemon">
+		                    </div>
+		                    <div class='form-group col-sm-4'>
+		                        <label class="control-label" for="focusedInput">Cuisine: </label>
+		                        <input class="form-control" id="focusedInput" type="text" name="cuisine-search" placeholder="ex. Italian">
+		                    </div>
+		                    <div class='form-group col-sm-4'>
+		                        <button type="button|submit|reset" class="btn btn-default">Submit</button>
+		                    </div>
+		                </form>
+		                <div class="row"></div>
+		            </div>
+		        </div>
 
                  <div class="col-md-6">
                  <br>
