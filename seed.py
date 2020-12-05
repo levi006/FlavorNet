@@ -2,7 +2,7 @@
 
 from model import Recipe, RecipeIngredient, Ingredient, FlavorCompound, Category, FlavorCompoundIngredient, Cuisine, Region, IngredientSimilarity, IngredientSimCuisine, connect_to_db, db
 from server import app
-from itertools import combinations, permutations
+from itertools import combinations
 from datetime import datetime
 # connect_to_db(app)
 
@@ -60,8 +60,8 @@ def load_ingredients():
 
         ingredient_id, name = int(ingredient_info[0]), ingredient_info[1]  
 
-        print (ingredient_id)
-        print (name) 
+        print(ingredient_id)
+        print(name) 
 
         ingredient = Ingredient(id=ingredient_id, name=name)
         db.session.add(ingredient)
@@ -155,7 +155,7 @@ def load_regions():
 def load_ingredient_similarities():
     """Loading ingredient pairs andd the number of flavor compounds they have in common.""" 
 
-    ingr_combos = combinations(Ingredient.query.all(),)
+    ingr_combos = combinations(Ingredient.query.all(),2)
     
     for combo in ingr_combos:
         # combo = tuple (ingr_obj, ingr_obj)
@@ -175,9 +175,9 @@ def load_ingredient_similarities():
 def load_ingredient_sim_cuisines():
     """Loading ingredient pairs, number of shared compounds, and cuisine.""" 
 
-    print "started recipe query at: " + str(datetime.now())
+    print("started recipe query at: ", str(datetime.now()))
     recipes = Recipe.query.all()
-    print "Queried recipe list at: " + str(datetime.now())
+    print("Queried recipe list at: ", str(datetime.now()))
 
     recipes_seen = 0
 
@@ -199,7 +199,7 @@ def load_ingredient_sim_cuisines():
                             
             ingr_combos[ingr_combo] = ingr_combos.get(ingr_combo, 0) + 1
 
-    print "Finished constructing map at: "  + str(datetime.now())
+    print("Finished constructing map at: ", + str(datetime.now()))
 
     combos_seen = 0
 
@@ -216,9 +216,9 @@ def load_ingredient_sim_cuisines():
         combos_seen += 1
 
         if(combos_seen % 500 == 0):
-            print "Starting commit after seeing " + str(combos_seen) + " ingredient combos at: "  + str(datetime.now())
+            print("Starting commit after seeing ", str(combos_seen), " ingredient combos at: ", str(datetime.now()))
             db.session.commit()
-            print "Finished commit "  + str(datetime.now())
+            print("Finished commit ", str(datetime.now()))
 
     db.session.commit()        
 
@@ -231,9 +231,9 @@ if __name__ == "__main__":
     # load_flavorcompounds()
     # load_compounds_to_ingredient()
     # load_ingredients()
-    # load_categories()
+    load_categories()
     # load_cuisines()
     # load_regions()
     # load_ingredient_similarities()
-    load_ingredient_sim_cuisines()
+    # load_ingredient_sim_cuisines()
    

@@ -32,7 +32,7 @@ class Recipe(db.Model):
         table = Table('recipes', Base.metadata, autoload=True)
         table.drop(db.engine)
         table.create(db.engine)
-        print "teardown complete for recipes"
+        print("teardown complete for recipes")
 
 
 class Ingredient(db.Model):
@@ -58,7 +58,7 @@ class Ingredient(db.Model):
         table = Table('ingredients', Base.metadata, autoload=True)
         table.drop(db.engine)
         table.create(db.engine)
-        print "Teardown complete for ingredients"    
+        print("Teardown complete for ingredients")   
 
     def json(self):
         json_ingredients= {}
@@ -150,7 +150,7 @@ class Cuisine(db.Model):
         table = Table('cuisines', Base.metadata, autoload=True)
         table.drop(db.engine)
         table.create(db.engine)
-        print "Teardown complete for cuisines"
+        print("Teardown complete for cuisines")
 
 
 class Region(db.Model):
@@ -189,7 +189,7 @@ class RecipeIngredient(db.Model):
         table = Table('recipe_ingredients', Base.metadata, autoload=True)
         table.drop(db.engine)
         table.create(db.engine)
-        print "teardown complete for recipe_ingredients"
+        print("teardown complete for recipe_ingredients")
     
     def __repr__(self):
         """Provide helpful representation when printed."""
@@ -255,7 +255,7 @@ class IngredientSimCuisine(db.Model):
         table = Table('ingr_sims_in_cuisines', Base.metadata, autoload=True)
         table.drop(db.engine)
         table.create(db.engine)
-        print "teardown complete for ingr_sims_in_cuisines"  
+        print("teardown complete for ingr_sims_in_cuisines")
 
 ##############################################################################
 # Helper functions
@@ -264,6 +264,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flavornet.db'
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     app.config['SQLALCHEMY_ECHO'] = False
     db.app = app
     db.init_app(app)
@@ -277,4 +278,4 @@ if __name__ == "__main__":
 
     Base = declarative_base()
     Base.metadata.bind = db.engine
-    print "Connected to DB."
+    print("Connected to DB.")
