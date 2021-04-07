@@ -64,10 +64,10 @@ def ingredient_pairs():
         ingr_one_id = ingr_similarity.ingr_one
 
         ingr_one_fcs = ingr_similarity.shared_fcs
-        print("shared compounds is:", str(ingr_one_fcs))
+        # print("shared compounds is:", str(ingr_one_fcs))
 
         ingr_one_name = Ingredient.query.filter(Ingredient.id==ingr_one_id).all()[0].name
-        print ("ingredient name is:", str(ingr_one_name))
+        # print ("ingredient name is:", str(ingr_one_name))
 
         ingr_fcs = (ingr_one_name, ingr_one_fcs)
 
@@ -94,7 +94,7 @@ def ingredient_pairs_json():
                                             Ingredient.name == ingr_zero
                                         ).first()
 
-    print("ingr_zero_obj is ", ingr_zero_obj)
+    # print("ingr_zero_obj is ", ingr_zero_obj)
 
     ingr_zero_id = ingr_zero_obj.id
 
@@ -157,7 +157,7 @@ def ingredient_pairs_cuisine_json():
 
     ingr_zero = Ingredient.query.filter(Ingredient.name==ingr_zero_name).first()
     ingr_zero_id = ingr_zero.id
-    print("ingr_zero_id is:", str(ingr_zero.id))
+    # print("ingr_zero_id is:", str(ingr_zero.id))
 
 
     cuisine_obj = Cuisine.query.filter(Cuisine.name==cuisine_name).first()
@@ -170,12 +170,12 @@ def ingredient_pairs_cuisine_json():
                                                      IngredientSimCuisine.cuisine==cuisine_id)\
                                                      .order_by(desc(IngredientSimCuisine.count)).limit(10).all()
 
-    print("ingr_one_sim_pairs is ", str(ingr_one_sim_pairs))
+    # print("ingr_one_sim_pairs is ", str(ingr_one_sim_pairs))
 
     # Pull ingr one ids from similarity pair objects
     ingr_one_ids = [ingr_similarity.ingr_one for ingr_similarity in ingr_one_sim_pairs]
 
-    print("ingr_one_ids is ", ingr_one_ids)
+    # print("ingr_one_ids is ", ingr_one_ids)
     # for d3 root sizes
     cuisine_size = 70000
 
@@ -220,7 +220,7 @@ def ingredient_pairs_cuisine_json():
 
         ingr_two_ids = [ ingr_similarity.ingr_one for ingr_similarity in ingr_two_sim_pairs ]
 
-        print("ingr_two_ids is ", ingr_two_ids)
+        # print("ingr_two_ids is ", ingr_two_ids)
 
         ingr_two_names = []
 
@@ -234,7 +234,7 @@ def ingredient_pairs_cuisine_json():
             # Pulling the ingr_two names from the ingr_two_obj   
             ingr_two_names.append(ingr_two_obj.name)
 
-        print("ingr_two_names is:", ingr_two_names)
+        # print("ingr_two_names is:", ingr_two_names)
 
         # Calling helper function create_subtree
         sub_tree = create_subtree(ingr_one_name, 50000, ingr_two_names, 20000)
@@ -305,7 +305,7 @@ def flavor_compound_detail(id):
 
     flavorcompound = FlavorCompound.query.get(id)
     ingredients_list = FlavorCompoundIngredient.query.filter_by(compound_id=id).all()
-    print(ingredients_list) 
+    # print(ingredients_list) 
 
     return render_template(
         "flavorcompound_detail.html",
