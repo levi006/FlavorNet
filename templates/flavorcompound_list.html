@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
-
 {% block header %}
 
 <style>
-
 body {
     background-image:none;
     background-color: "white";
@@ -11,23 +9,19 @@ body {
     background-position: center center;
     background-attachment: fixed;
 }
-
-
 </style>
 
-
 {% endblock %}
-
 {% block content %}
+
 <div class="text_results">
-  <h3>All Flavor Compounds</h3>
-  
-  <ul>
-  {% for flavorcompound in flavorcompounds %}
+    <h3>All Flavor Compounds</h3>  
+    <ul>
+    {% for flavorcompound in flavorcompounds %}
     <li>
-      <a href="/flavorcompounds/{{ flavorcompound.id }}">{{ flavorcompound.name }}</a>
+        <a href="/flavorcompounds/{{ flavorcompound.id }}">{{ flavorcompound.name }}</a>
     </li>
-  {% endfor %}
-  </ul>
- </div>
+    {% endfor %}
+    </ul>
+</div>
 {% endblock %}

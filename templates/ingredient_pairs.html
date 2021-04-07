@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block header %}
 
 <style>
@@ -39,30 +38,23 @@ body {
 <!--extending the base template--> 
 
 {% endblock %}
-
 {% block content %}
 
 <div class="row">
-  <div class="col-md-8">
-    <div class="text_results">
-      <h3>  
-        {{ ingr_zero_name.upper() }}  
-      </h3>
-      <br><br>
-        
-        {% for ingr_one_name in ingr_one_names %}
-        
-          <li>{{ ingr_one_name[0] }} shares: {{ ingr_one_name[1]}} compounds </li>
-
-        {% endfor %}
-
-    </div>    
-  </div>
-
-  <div class="col-md-4">
-    <div id="svg_test">
+    <div class="col-md-8">
+        <div class="text_results">
+            <h3>  
+            {{ ingr_zero_name.upper() }}  
+            </h3>
+            <br><br>
+            {% for ingr_one_name in ingr_one_names %}
+            <li>{{ ingr_one_name[0] }} shares: {{ ingr_one_name[1]}} compounds </li>
+            {% endfor %}
+        </div>    
     </div>
-  </div>
+    <div class="col-md-4">
+        <div id="svg_test"></div>
+    </div>
 </div>
 
 <!--Beginning of Collapsible Force Layou: D3.js--> 

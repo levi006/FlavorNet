@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
-
 {% block header %}
 
 <style>
-
 body {
     background-image:none;
     background-color: "white";
@@ -11,26 +9,18 @@ body {
     background-position: center center;
     background-attachment: fixed;
 }
-
-
 </style>
 
 {% endblock %}
-
 {% block content %}
 
-
 <div class="text_results">
-<h3>{{ ingredient.name }}</h3>
-
-<ul>
-
-{% for fci in fcis_list %}
-
+    <h3>{{ ingredient.name }}</h3>
+    <ul>
+    {% for fci in fcis_list %}
 	<li> {{ fci.compound.name }}</li>
- 
-{% endfor %}
-</ul>
+    {% endfor %}
+    </ul>
 </div>
 
 {% endblock %}

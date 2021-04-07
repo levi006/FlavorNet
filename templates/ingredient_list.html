@@ -1,10 +1,7 @@
 {% extends 'base.html' %}
-
-
 {% block header %}
 
 <style>
-
 body {
     background-image:none;
     background-color: "white";
@@ -12,23 +9,18 @@ body {
     background-position: center center;
     background-attachment: fixed;
 }
-
-
 </style>
 
-
 {% endblock %}
-
 {% block content %}
 
 <div class= "text_results">
-  <h3>All Ingredients</h3>
-  
-  {% for ingredient in ingredients %}
+    <h3>All Ingredients</h3>
+    {% for ingredient in ingredients %}
     <li>
-      <a href="/ingredients/{{ ingredient.id }}">{{ ingredient.name }}</a>
+        <a href="/ingredients/{{ ingredient.id }}">{{ ingredient.name }}</a>
     </li>
-  {% endfor %}
-  </ul>
- </div>
+    {% endfor %}
+    </ul>
+</div>
 {% endblock %}
