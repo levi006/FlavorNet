@@ -12,141 +12,96 @@
         <script src="/static/js/typeahead.js"></script>
         <script src="/static/js/ingrs_fcis_typeahead.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-
         {% block header %}
-
         {% endblock %}
-
-
     </head>
 
     <body>
         <div class="entire_wrapper">
-        	<nav class="navbar navbar-default">
-			  <div class="container-fluid">
-			    <div class="navbar-header">
-			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-			        <span class="sr-only">Toggle navigation</span>
-			        <span class="icon-bar"></span>
-			        <span class="icon-bar"></span>
-			        <span class="icon-bar"></span>
-			      </button>
-			      <a class="navbar-brand" style="font-size:20px" href="/">flavornet</a>
-			    </div>
-
-			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			      <ul class="nav navbar-nav">
-<!-- 			        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-			        <li><a href="#">Link</a></li> -->
-			        <li class="dropdown">
-			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">References <span class="caret"></span></a>
-			          <ul class="dropdown-menu" role="menu">
-			            <li><a href="/ingredients">All Ingredients</a></li>
-			            <li><a href="/flavorcompounds">All Flavor Compounds</a></li>
-			            <!-- li><a href="#">Something else here</a></li>
-			            <li class="divider"></li>
-			            <li><a href="#">Separated link</a></li>
-			            <li class="divider"></li>
-			            <li><a href="#">One more separated link</a></li> -->
-			          </ul>
-			        </li>
-			      </ul>
-			      <!-- <form class="navbar-form navbar-left" role="search">
-			        <div class="form-group">
-			          <input type="text" class="form-control" placeholder="Search">
-			        </div>
-			        <button type="submit" class="btn btn-default">Submit</button>
-			      </form> -->
-			      <ul class="nav navbar-nav navbar-right">
-			        <li><a href="#">About</a></li>
-			      </ul>
-			    </div>
-			  </div>
-			</nav>
-              
-<!--             <div class = "container">
+            <nav class="navbar navbar-default">
+              <div class="container-fluid">
+                <div class="navbar-header">
+                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                  </button>
+                  <a class="navbar-brand" style="font-size:20px" href="/">flavornet</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                  <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">References <span class="caret"></span></a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="/ingredients">All Ingredients</a></li>
+                        <li><a href="/flavorcompounds">All Flavor Compounds</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">About</a></li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+            <div class = "container">
                 <div class="row">
                     <div id="user_sidebar">
                         <div id="left_hand_col" class="col-xs-6" style="font-size:15px">
                             <p> Search ingredient pairs:</p>
                             <div class="row">
-	                            <form class="form-inline" action="/ingredient_pairs">
-                            	<div class="col-xs-4">
-	                                <div id ="ingredient_pairs_typeahead">
-	                                    <div class="form-group">
-	                                        <input class="typeahead form-control" name="ingr_zero_input" type="text" placeholder="i.e. lemon">
-	                                    </div>
-	                                </div>
-	                            </div>    
-	                        	<div class="col-xs-8">
-	                                <button type="submit" class="btn btn-default">Submit</button>
-	                            </div>
-								</form>
-	                        </div>    
+                                <form class="form-inline" action="/ingredient_pairs">
+                                <div class="col-xs-4">
+                                    <div id ="ingredient_pairs_typeahead">
+                                        <div class="form-group">
+                                            <input class="typeahead form-control" name="ingr_zero_input" type="text" placeholder="i.e. lemon">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-8">
+                                    <button type="submit" class="btn btn-default">Submit</button>
+                                </div>
+                                </form>
+                            </div>
                             <br>
                         </div>
-
                         <div id="right_hand_col" class="col-md-6" style="font-size:15px">
                             <p>Search ingredients within a cuisine:</p>
-							<div class="row">
-								<form class="form-inline" action="/ingredient_pairs/cuisines">
-	                            	
-								<div class="col-md-4">
-	                            	
-		                                <div id="ingredient_pairs_typeahead">
-		                                    <div class="form-group">
-
-		                                        <input class="typeahead form-control" type="text" name="ingr_zero_input" placeholder="i.e. lemon">
-		                                    </div>	
-		                                </div>
-		                        </div>
-		                                
-		                        <div class="col-md-4">
-			                        <div id="cuisines_typeahead">
-			                            <div class="form-group">
-
-			                                    <input class="typeahead form-control" type="text" name="cuisine_input" placeholder="i.e. Italian">
-			                            </div>  		
-			                        </div>
-			                    </div>
-		                        <div class="col-md-4">        
-		                                <button type="submit" class="btn btn-default">Submit</button>
-		                        </div>
-								</form>
-		                    </div>   
+                            <div class="row">
+                                <form class="form-inline" action="/ingredient_pairs/cuisines">
+                                <div class="col-md-4">
+                                        <div id="ingredient_pairs_typeahead">
+                                            <div class="form-group">
+                                                <input class="typeahead form-control" type="text" name="ingr_zero_input" placeholder="i.e. lemon">
+                                            </div>	
+                                        </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div id="cuisines_typeahead">
+                                        <div class="form-group">
+                                                <input class="typeahead form-control" type="text" name="cuisine_input" placeholder="i.e. Italian">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                        <button type="submit" class="btn btn-default">Submit</button>
+                                </div>
+                                </form>
+                            </div>   
                         </div>
                     </div>
-                </div> -->
+                </div>
+                <div class="col-md-6">
+                <br>
+                <br>
+                <br>
+                    {% block content %}
 
-                <div class="container">
-		            <div class="row">
-		                <form class="form-inline row" action="/search">
-		                    <div class='form-group col-sm-4'>
-		                        <label class="control-label" for="focusedInput">Ingredient: </label>
-		                        <input class="form-control" id="focusedInput" type="text" name="ingredient-search" placeholder="ex. lemon">
-		                    </div>
-		                    <div class='form-group col-sm-4'>
-		                        <label class="control-label" for="focusedInput">Cuisine: </label>
-		                        <input class="form-control" id="focusedInput" type="text" name="cuisine-search" placeholder="ex. Italian">
-		                    </div>
-		                    <div class='form-group col-sm-4'>
-		                        <button type="button|submit|reset" class="btn btn-default">Submit</button>
-		                    </div>
-		                </form>
-		                <div class="row"></div>
-		            </div>
-		        </div>
-
-                 <div class="col-md-6">
-                 <br>
-                 <br>
-                 <br>
-                        {% block content %}
-
-                        {% endblock %}
+                    {% endblock %}
                 </div>
             </div>
-
         </div>
     </body>
 </html>
